@@ -2,40 +2,30 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 import time
 
 driver = webdriver.Chrome()
 wait = WebDriverWait(driver, 10)
 
 try:
-    # 1. Open Amazon
-    driver.get("https://www.amazon.com/")
-    time.sleep(3)
+    # 1. Open site
+    driver.get("https://www.saucedemo.com/")
 
-    # 2. Search for product
-    search_box = wait.until(EC.visibility_of_element_located((By.ID, "twotabsearchtextbox")))
-    search_box.send_keys("wireless mouse")
-    search_box.send_keys(Keys.RETURN)
-    time.sleep(3)
+    # 2. Login
+    wait.until(EC.visibility_of_element_located((By.ID, "user-name"))).send_keys("standard_user")
+    driver.find_element(By.ID, "password").send_keys("secret_sauce")
+    driver.find_element(By.ID, "login-button").click()
 
-    # 3. Click first result
-    first_product = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.s-result-item h2 a")))
-    first_product.click()
-    time.sleep(3)
+    # 3. Add product to cart
+    wait.until(EC.element_to_be_clickable((By.ID, "add-to-cart-sauce-labs-backpack"))).click()
 
-    # 4. Add to cart
-    add_to_cart = wait.until(EC.element_to_be_clickable((By.ID, "add-to-cart-button")))
-    add_to_cart.click()
-    time.sleep(3)
+    # 4. Verify cart
+    cart = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "shopping_cart_badge")))
+    assert cart.text == "1", "Cart is empty!"
+    print(f"Cart count: {cart.text}")
 
-    # 5. Verify cart
-    cart_count = wait.until(EC.visibility_of_element_located((By.ID, "nav-cart-count")))
-    assert cart_count.text != "0", "Cart is empty!"
-    print(f"Cart count: {cart_count.text}")
-
-    # 6. Screenshot
-    driver.save_screenshot("amazon_cart.png")
+    # 5. Screenshot
+    driver.save_screenshot("cart_screenshot.png")
     print("Screenshot saved!")
 
 except Exception as e:
