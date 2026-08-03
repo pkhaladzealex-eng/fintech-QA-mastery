@@ -27,3 +27,19 @@ Having established strong foundations in Python, Selenium UI testing, API paymen
 
 ##  Previous Phase
 *  **Phase 1 (Days 1-90):** [Fintech Learning Foundation](https://github.com/pkhaladzealex-eng/fintech-learning)
+
+---
+
+## 📅 Phase 2 Progress Log
+
+### 🛒 Day 91: DemoBlaze E-Commerce Automated UI Flow
+* **Objective:** Automate product selection, cart insertion, browser alert handling, and verification.
+* **Key Actions:**
+  * Used `WebDriverWait` with explicit conditions (`EC.element_to_be_clickable`).
+  * Managed browser pop-up using `driver.switch_to.alert`.
+  * Captured automated evidence screenshot of the shopping cart.
+* **Files:**
+  * 📜 [Automation Script](./days-91-180/day91.py)
+  * 📸 [Cart Verification Screenshot](./days-91-180/demoblaze_cart.png)
+
+![DemoBlaze Cart Verification](./days-91-180/demoblaze_cart.png)
