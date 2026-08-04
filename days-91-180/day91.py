@@ -11,7 +11,7 @@ try:
     driver.get("https://www.demoblaze.com/")
     driver.maximize_window()
     print(driver.title)
-    time.sleep(2)
+
 
     # Click first product
     first_product = wait.until(EC.element_to_be_clickable(
@@ -20,7 +20,6 @@ try:
     first_product.click()
     print("Product page opened!")
     print(driver.current_url)
-    time.sleep(5)
 
     # Add to cart
     add_to_cart = wait.until(EC.element_to_be_clickable(
@@ -28,13 +27,13 @@ try:
     ))
     add_to_cart.click()
     print("Added to cart!")
-    time.sleep(2)
 
     # Handle popup alert
+    wait.until(EC.alert_is_present())
     alert = driver.switch_to.alert
     print(f"Popup message: {alert.text}")
     alert.accept()
-    time.sleep(2)
+    time.sleep(1)
 
     # Navigate to cart
     cart_link = wait.until(EC.element_to_be_clickable(
@@ -50,7 +49,6 @@ try:
     # Screenshot
     driver.save_screenshot("demoblaze_cart.png")
     print("Screenshot saved!")
-    time.sleep(2)
 
 
 except Exception as e:

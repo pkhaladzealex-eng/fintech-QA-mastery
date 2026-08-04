@@ -42,4 +42,3 @@ Having established strong foundations in Python, Selenium UI testing, API paymen
   * 📜 [Automation Script](./days-91-180/day91.py)
   * 📸 [Cart Verification Screenshot](./days-91-180/demoblaze_cart.png)
 
-![DemoBlaze Cart Verification](./days-91-180/demoblaze_cart.png)
