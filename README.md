@@ -42,3 +42,14 @@ Having established strong foundations in Python, Selenium UI testing, API paymen
   * 📜 [Automation Script](./days-91-180/day91.py)
   * 📸 [Cart Verification Screenshot](./days-91-180/demoblaze_cart.png)
 
+---
+
+### ⚡ Day 92: Refactoring UI Wait Logic (Zero Hardcoded Sleep)
+* **Objective:** Remove all `time.sleep()` calls and replace them with explicit wait conditions[cite: 2].
+* **Key Actions:**
+  * Replaced fixed pauses with dynamic waits like `EC.alert_is_present()` and `EC.presence_of_element_located()`[cite: 2].
+  * Improved execution speed and script reliability[cite: 2].
+  * Verified full execution flow and regenerated confirmation screenshot[cite: 2].
+* **Files:**
+  * 📜 [Refactored Script](./days-91-180/day91.py)[cite: 2]
+  * 📸 [Cart Verification Screenshot](./days-91-180/demoblaze_cart.png)[cite: 2]
