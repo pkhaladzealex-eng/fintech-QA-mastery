@@ -45,11 +45,26 @@ Having established strong foundations in Python, Selenium UI testing, API paymen
 ---
 
 ### ⚡ Day 92: Refactoring UI Wait Logic (Zero Hardcoded Sleep)
-* **Objective:** Remove all `time.sleep()` calls and replace them with explicit wait conditions[cite: 2].
+* **Objective:** Remove all `time.sleep()` calls and replace them with explicit wait conditions[cite: 4].
 * **Key Actions:**
-  * Replaced fixed pauses with dynamic waits like `EC.alert_is_present()` and `EC.presence_of_element_located()`[cite: 2].
-  * Improved execution speed and script reliability[cite: 2].
-  * Verified full execution flow and regenerated confirmation screenshot[cite: 2].
+  * Replaced fixed pauses with dynamic waits like `EC.alert_is_present()` and `EC.presence_of_element_located()`[cite: 4].
+  * Ensured cart elements are loaded before capturing screenshots.
+  * Improved execution speed and overall test reliability.
 * **Files:**
-  * 📜 [Refactored Script](./days-91-180/day91.py)[cite: 2]
-  * 📸 [Cart Verification Screenshot](./days-91-180/demoblaze_cart.png)[cite: 2]
+  * 📜 [Refactored Script](./days-91-180/day92.py)
+  * 📸 [Cart Verification Screenshot](./days-91-180/demoblaze_cart.png)
+
+---
+
+### 🧪 Day 93: Pytest Integration with Driver Fixtures
+* **Objective:** Convert the standalone Selenium script into a structured Pytest test suite using fixtures.
+* **Key Actions:**
+  * Created a `@pytest.fixture` for browser setup, window maximization, and automated teardown (`yield` / `driver.quit()`).
+  * Structured test flow with explicit assertions (`assert` on title, product URL, alert text, and cart page URL).
+  * Maintained dynamic explicit waits and captured automated screenshot evidence upon success.
+* **Files:**
+  * 📜 [Pytest Script](./days-91-180/test_ecommerce_flow.py)
+  * 📸 [Cart Verification Screenshot](./days-91-180/demoblaze_cart.png)
+
+---
+
