@@ -68,3 +68,12 @@ Having established strong foundations in Python, Selenium UI testing, API paymen
 
 ---
 
+### 🗑️ Day 94: End-to-End Item Removal & Cart State Assertions
+* **Objective:** Expand the Pytest suite with a second automated test to verify item deletion from the shopping cart.
+* **Key Actions:**
+  * Added `test_add_product_to_cart_and_remove` using XPATH locators for specific product targeting (`HTC One M9`)
+  * Handled dynamic DOM changes using `EC.staleness_of` to confirm element removal after clicking 'Delete'.
+  * Validated empty cart state with explicit assertion (`len(remaining_items) == 0`).
+* **Files:**
+  * 📜 [Pytest Script Suite](./days-91-180/test_ecommerce_flow.py)
+  * 📸 [Cart Removal Screenshot Evidence](./days-91-180/demoblaze_cart_01.png)
