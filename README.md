@@ -77,3 +77,15 @@ Having established strong foundations in Python, Selenium UI testing, API paymen
 * **Files:**
   * 📜 [Pytest Script Suite](./days-91-180/test_ecommerce_flow.py)
   * 📸 [Cart Removal Screenshot Evidence](./days-91-180/demoblaze_cart_01.png)
+
+---
+
+### 🛠️ Day 95: Helper Utilities Refactoring (DRY Principle)
+* **Objective:** Extract common Selenium UI actions into a separate utility module (`ecommerce_utils.py`) to reduce duplication.
+* **Key Actions:**
+  * Created reusable helper functions for opening site, clicking products by name, adding items, navigating to cart, and deleting items.
+  * Refactored `test_ecommerce_flow.py` to import and utilize `ecommerce_utils` helper functions.
+  * Kept assertions and test flows intact while keeping test methods clean and readable.
+* **Files:**
+  * 📜 [Helper Utilities File](./days-91-180/ecommerce_utils.py)
+  * 📜 [Refactored Pytest Suite](./days-91-180/test_ecommerce_flow.py)
