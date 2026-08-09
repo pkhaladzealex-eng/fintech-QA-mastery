@@ -89,3 +89,16 @@ Having established strong foundations in Python, Selenium UI testing, API paymen
 * **Files:**
   * 📜 [Helper Utilities File](./days-91-180/ecommerce_utils.py)
   * 📜 [Refactored Pytest Suite](./days-91-180/test_ecommerce_flow.py)
+  
+---
+
+### 💳 Day 96: E-Commerce Payment Checkout & Order Completion
+* **Objective:** Automate the complete end-to-end purchasing process from product selection to payment checkout and order confirmation.
+* **Key Actions:**
+  * Added checkout-specific helper functions (`click_place_order`, `fill_checkout_form`) to `ecommerce_utils.py.
+  * Validated checkout modal display and populated order details dynamically without using hardcoded sleeps.
+  * Asserted post-purchase success header (`Thank you for your purchase!`) and captured screenshot confirmation.
+* **Files:**
+  * 📜 [Payment Checkout Test](./days-91-180/test_payment_checkout.py)
+  * 📜 [Updated Utilities Module](./days-91-180/ecommerce_utils.py)
+  * 📸 [Purchase Confirmation Screenshot](./days-91-180/demoblaze_purchase.png)
