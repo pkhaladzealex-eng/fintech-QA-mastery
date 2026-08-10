@@ -52,4 +52,42 @@ def test_payment_checkout(driver):
 
     driver.save_screenshot("demoblaze_purchase.png")
 
+#Second test with invalid card
+def test_checkout_with_invalid_card(driver):
+    wait = WebDriverWait(driver,10)
+
+
+    # Open  site
+    utils.open_site(driver)
+    assert "STORE" in driver.title
+
+    # Choose the product
+    utils.click_product_by_name(driver, wait, "Sony vaio i5")
+    assert "prod.html" in driver.current_url
+
+    # Add product to cart
+    utils.add_product_to_cart(driver, wait)
+
+    # Navigate to cart
+    utils.navigate_to_cart(driver, wait)
+
+    # Click to place order
+    utils.click_place_order(driver, wait)
+
+    # Assert: Verify modal window is displayed by checking its title
+    modal_title = wait.until(
+        EC.visibility_of_element_located((By.XPATH, "//div[@id='orderModal']//div[@class='modal-header']"))
+    )
+    assert modal_title.is_displayed()
+
+    # Fill checkout form (leaving card empty to trigger validation error)
+    utils.fill_checkout_form(driver, wait, "Alex", "Czechia", "Prague", "", "8", "2026")
+    # Verify error message via alert popup
+    alert = wait.until(EC.alert_is_present())
+    alert_obj = driver.switch_to.alert
+    assert alert_obj.text == "Please fill out Name and Creditcard."
+    alert_obj.accept()
+
+    # Screenshot
+    driver.save_screenshot("demoblaze_invalid_checkout.png")
 
