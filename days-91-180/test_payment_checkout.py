@@ -57,22 +57,7 @@ def test_checkout_with_invalid_card(driver):
     wait = WebDriverWait(driver,10)
 
 
-    # Open  site
-    utils.open_site(driver)
-    assert "STORE" in driver.title
-
-    # Choose the product
-    utils.click_product_by_name(driver, wait, "Sony vaio i5")
-    assert "prod.html" in driver.current_url
-
-    # Add product to cart
-    utils.add_product_to_cart(driver, wait)
-
-    # Navigate to cart
-    utils.navigate_to_cart(driver, wait)
-
-    # Click to place order
-    utils.click_place_order(driver, wait)
+    utils.setup_and_add_to_cart(driver, wait, "HTC One M9")
 
     # Assert: Verify modal window is displayed by checking its title
     modal_title = wait.until(
@@ -90,4 +75,5 @@ def test_checkout_with_invalid_card(driver):
 
     # Screenshot
     driver.save_screenshot("demoblaze_invalid_checkout.png")
+
 

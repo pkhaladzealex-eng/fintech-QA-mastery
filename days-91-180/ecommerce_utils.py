@@ -90,3 +90,11 @@ def remove_product_from_cart(driver, wait):
     ))
     delete_btn.click()
 
+def setup_and_add_to_cart(driver, wait, product_name):
+    """Navigate to product, add to cart, go to checkout"""
+    open_site(driver)
+    click_product_by_name(driver, wait, product_name)
+    add_product_to_cart(driver, wait)
+    navigate_to_cart(driver, wait)
+    click_place_order(driver, wait)
+

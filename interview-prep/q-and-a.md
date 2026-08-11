@@ -63,3 +63,15 @@ Explicit waits check the browser continuously and move forward the moment an ele
 "Unit tests verify individual functions in isolation—for example, testing a single helper function. Integration tests verify that multiple components work together correctly—like testing the entire checkout flow from product selection to payment confirmation. Integration tests are closer to real user scenarios but are slower and harder to debug. I use both: unit tests for utility functions, integration tests for complete workflows."
 
 ---
+
+ ## Day 97
+
+---
+
+**Q:** 
+"Why is negative testing important in QA automation?"
+
+**A:** 
+"Positive testing verifies that the happy path works—when everything goes right. Negative testing checks what happens when things go wrong—invalid inputs, failed payments, network errors. Both are critical. If I only test the happy path, I won't catch bugs that affect 10% of users with bad credit cards or slow networks. Negative tests catch edge cases that real users encounter."
+
+---

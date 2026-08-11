@@ -102,3 +102,17 @@ Having established strong foundations in Python, Selenium UI testing, API paymen
   * 📜 [Payment Checkout Test](./days-91-180/test_payment_checkout.py)
   * 📜 [Updated Utilities Module](./days-91-180/ecommerce_utils.py)
   * 📸 [Purchase Confirmation Screenshot](./days-91-180/demoblaze_purchase.png)
+
+
+---
+
+### ⚠️ Day 97: Negative Checkout Flow & Alert Validation
+* **Objective:** Test negative path handling during checkout when mandatory payment details are missing.
+* **Key Actions:**
+  * Created helper function `setup_and_add_to_cart` in `ecommerce_utils.py` to streamline multi-step test prerequisites.
+  * Added `test_checkout_with_invalid_card` to attempt checkout with missing card information.
+  * Validated system alert popup (`Please fill out Name and Creditcard.`) and handled browser alert dismissal.
+* **Files:**
+  * 📜 [Payment Checkout Test Suite](./days-91-180/test_payment_checkout.py)
+  * 📜 [Updated Utilities Module](./days-91-180/ecommerce_utils.py)
+  * 📸 [Invalid Checkout Screenshot](./days-91-180/demoblaze_invalid_checkout.png)
