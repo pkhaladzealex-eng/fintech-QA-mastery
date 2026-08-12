@@ -16,12 +16,12 @@ The focus of this phase is moving from simple scripts to production-grade automa
 
 ## 🧪 Tests & Files Directory
 
-* [day91.py](./days-91-180/day91.py) * - Initial basic Selenium automation script for DemoBlaze (product selection and cart interaction).
-* [day92.py](./days-91-180/day92.py) - Refactored script with zero hardcoded sleeps using dynamic explicit wait conditions.
-* [ecommerce_utils.py](./days-91-180/ecommerce_utils.py) - Reusable helper module containing UI interaction functions (navigation, product selection, checkout, alert handling).
-* [test_ecommerce_flow.py](./days-91-180/test_ecommerce_flow.py) - Pytest suite for e-commerce cart management (adding items, verifying cart content, removing items with `staleness_of` assertions).
-* [test_payment_checkout.py](./days-91-180/test_payment_checkout.py) - Pytest suite for order completion (filling checkout forms, validating purchase modals, and handling missing payment detail alerts).
-
+* [day91.py](day91.py)  - Initial basic Selenium automation script for DemoBlaze (product selection and cart interaction).
+* [day92.py](day92.py) - Refactored script with zero hardcoded sleeps using dynamic explicit wait conditions.
+* [ecommerce_utils.py](ecommerce_utils.py) - Reusable helper module containing UI interaction functions (navigation, product selection, checkout, alert handling).
+* [test_ecommerce_flow.py](test_ecommerce_flow.py) - Pytest suite for e-commerce cart management (adding items, verifying cart content, removing items with `staleness_of` assertions).
+* [test_payment_checkout.py](test_payment_checkout.py) - Pytest suite for order completion (filling checkout forms, validating purchase modals, and handling missing payment detail alerts).
+* [conftest.py](conftest.py) - Pytest configuration module providing session-scoped `browser` fixture and automated test logging (`autouse=True`)
 ---
 
 ## 🚀 How to Run Tests
@@ -31,25 +31,26 @@ Ensure you are inside the `days-91-180` directory, then run the Pytest suite usi
 ```bash
 pytest . -v -s
 ```
-🛠️ Key QA Automation Skills Demonstrated
-Explicit Waits: Leveraging WebDriverWait with EC.element_to_be_clickable, EC.presence_of_element_located, EC.alert_is_present, and EC.staleness_of.
+## 🛠️ Key QA Automation Skills Demonstrated
 
-Pytest Fixtures: Reusable @pytest.fixture for driver setup, browser maximization, and clean teardown (yield / driver.quit()).
+* **Explicit Waits:** Leveraging WebDriverWait with EC.element_to_be_clickable, EC.presence_of_element_located, EC.alert_is_present, and EC.staleness_of.
 
-Modular Code Structure: Reusable helper functions inside ecommerce_utils.py.
+* **Pytest Fixtures:** Reusable @pytest.fixture for driver setup, browser maximization, and clean teardown (yield / driver.quit()).
 
-Positive & Negative Path Testing: Validating successful purchase confirmation vs. missing payment alert popups.
+* **Modular Code Structure:** Reusable helper functions inside ecommerce_utils.py.
 
-Dynamic DOM Assertions: Verifying element state changes and item counts after cart deletions.
+* **Positive & Negative Path Testing:** Validating successful purchase confirmation vs. missing payment alert popups.
 
-📸 Test Execution Evidence & Screenshots
-demoblaze_cart.png - Verification of item successfully added to the shopping cart.
+* **Dynamic DOM Assertions:** Verifying element state changes and item counts after cart deletions.
 
-[demoblaze_cart_01.png](./days-91-180/demoblaze_cart_01.png) - Verification of cart state after item removal.
+## 📸 Test Execution Evidence & Screenshots
+[demoblaze_cart.png](demoblaze_cart.png) - Verification of item successfully added to the shopping cart.
 
-[demoblaze_purchase.png](./days-91-180/demoblaze_purchase.png) - Confirmation modal after filling checkout details and placing an order.
+[demoblaze_cart_01.png](demoblaze_cart_01.png) - Verification of cart state after item removal.
 
-[demoblaze_invalid_checkout.png](./days-91-180/demoblaze_invalid_checkout.png) - Alert validation popup when attempting checkout with missing mandatory fields.
+[demoblaze_purchase.png](demoblaze_purchase.png) - Confirmation modal after filling checkout details and placing an order.
+
+[demoblaze_invalid_checkout.png](demoblaze_invalid_checkout.png) - Alert validation popup when attempting checkout with missing mandatory fields.
 
 ---
 
