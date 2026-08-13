@@ -22,6 +22,7 @@ The focus of this phase is moving from simple scripts to production-grade automa
 * [test_ecommerce_flow.py](test_ecommerce_flow.py) - Pytest suite for e-commerce cart management (adding items, verifying cart content, removing items with `staleness_of` assertions).
 * [test_payment_checkout.py](test_payment_checkout.py) - Pytest suite for order completion (filling checkout forms, validating purchase modals, and handling missing payment detail alerts).
 * [conftest.py](conftest.py) - Pytest configuration module providing session-scoped `browser` fixture and automated test logging (`autouse=True`)
+* [day100-milestone.md](day100-milestone.md) - Milestone reflection documenting 100 days of consistency, 226 total commits, skill progress, and roadmap for the next 80 days.
 ---
 
 ## 🚀 How to Run Tests
