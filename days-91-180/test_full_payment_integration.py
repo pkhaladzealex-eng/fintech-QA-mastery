@@ -85,11 +85,17 @@ def test_full_payment_integration(browser):
     # Extract values from DB result
     db_amount = db_row[0]
     db_description = db_row[1]
+    print(f"UI Price: ${UI_price/100}")
+    print(f"Stripe Charge: {charge.id} - ${charge.amount/100}")
+    print(f"DB Record: {db_amount/100}")
 
     #  Assert: UI price = Stripe amount = Database amount
     assert UI_price == charge.amount == db_amount
     assert product_name == charge.description == db_description
-
+    
+    cursor.execute("DELETE FROM payments WHERE payment_id = ?", (charge.id,))
+    connection.commit()
+    connection.close()
     connection.close()
 
 
