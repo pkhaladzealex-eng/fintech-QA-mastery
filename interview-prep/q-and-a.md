@@ -75,3 +75,9 @@ Explicit waits check the browser continuously and move forward the moment an ele
 "Positive testing verifies that the happy path works—when everything goes right. Negative testing checks what happens when things go wrong—invalid inputs, failed payments, network errors. Both are critical. If I only test the happy path, I won't catch bugs that affect 10% of users with bad credit cards or slow networks. Negative tests catch edge cases that real users encounter."
 
 ---
+
+## Day 101
+
+**Q:** Explain the three layers of automated testing: UI, API, and Database.
+
+**A:** UI testing verifies that the user interface works correctly—buttons click, forms submit, data displays. API testing verifies that backend services process data correctly—payments charge, transactions record. Database testing verifies that data persists correctly—records save, values match. Testing all three together is integration testing. Real bugs often happen at the boundaries between layers, so testing integration is critical.
