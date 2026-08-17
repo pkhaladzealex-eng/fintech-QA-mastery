@@ -24,6 +24,7 @@ The focus of this phase is moving from simple scripts to production-grade automa
 * [conftest.py](conftest.py) - Pytest configuration module providing session-scoped `browser` fixture and automated test logging (`autouse=True`)
 * [day100-milestone.md](day100-milestone.md) - Milestone reflection documenting 100 days of consistency, 226 total commits, skill progress, and roadmap for the next 80 days.
 * [test_full_payment_integration.py](test_full_payment_integration.py) - End-to-end integration test connecting Selenium UI automation, Stripe API test charges, and SQLite database verification.
+* [test_payment_error_handling.py](test_payment_error_handling.py) - Error handling integration test across UI, Stripe API (declined card simulation), and SQLite DB status verification.
 ---
 
 ## 🚀 How to Run Tests
@@ -45,6 +46,8 @@ pytest . -v -s
 
 * **Dynamic DOM Assertions:** Verifying element state changes and item counts after cart deletions.
 * **Full-Stack Integration Testing:** Combined Web UI data extraction, Stripe API payment processing, and SQLite DB verification into a single test asserting data integrity across all three layers (`UI Price == Stripe Amount == DB Amount`).
+* **Multi-Layer Error Handling:** Validated failed payment workflows end-to-end by handling `stripe.error.CardError` exceptions, extracting failed charge IDs, and asserting consistent failure statuses (`failed`) across API responses and database records.
+
 ## 📸 Test Execution Evidence & Screenshots
 [demoblaze_cart.png](demoblaze_cart.png) - Verification of item successfully added to the shopping cart.
 

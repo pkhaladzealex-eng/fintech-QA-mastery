@@ -7,9 +7,6 @@ import config as cfg
 import sqlite3
 
 
-
-
-
 # Use Selenium to add product to cart (UI automation)
 def test_full_payment_integration(browser):
     wait = WebDriverWait(browser, 10)
@@ -58,11 +55,6 @@ def test_full_payment_integration(browser):
     stripe_amount = charge.amount / 100
     status = data.get('status', 'unknown')
     description = data.get('description', '')
-
-
-
-
-
 
 
 
