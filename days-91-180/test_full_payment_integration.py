@@ -55,7 +55,7 @@ def test_full_payment_integration(browser):
     data = resource.to_dict()
 
     # 3. Data Extraction with safer access
-    stripe_amount = data.get('amount', 0) / 100
+    stripe_amount = charge.amount / 100
     status = data.get('status', 'unknown')
     description = data.get('description', '')
 
@@ -85,9 +85,10 @@ def test_full_payment_integration(browser):
     # Extract values from DB result
     db_amount = db_row[0]
     db_description = db_row[1]
-    print(f"UI Price: ${UI_price/100}")
-    print(f"Stripe Charge: {charge.id} - ${charge.amount/100}")
-    print(f"DB Record: {db_amount/100}")
+
+    print(f"UI Price: ${UI_price/100:.2f}")
+    print(f"Stripe Charge: {charge.id} - ${charge.amount/100:.2f}")
+    print(f"DB Record: {db_amount/100:.2f}")
 
     #  Assert: UI price = Stripe amount = Database amount
     assert UI_price == charge.amount == db_amount
