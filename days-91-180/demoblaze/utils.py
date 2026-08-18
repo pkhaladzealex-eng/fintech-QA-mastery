@@ -2,6 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import sqlite3
+import stripe
+import config as cfg
 
 def open_site(driver):
     # Navigate to the target website and maximize the browser window
@@ -98,3 +101,45 @@ def setup_and_add_to_cart(driver, wait, product_name):
     navigate_to_cart(driver, wait)
     click_place_order(driver, wait)
 
+# --- NEW HELPER FUNCTIONS (Day 103) ---
+
+def extract_product_details(driver, wait):
+    """Extract product name and price in cents from product details page"""
+    name = wait.until(
+        EC.visibility_of_element_located((By.XPATH, "//h2[@class='name']"))
+    ).text
+
+    price_text = wait.until(
+        EC.visibility_of_element_located((By.XPATH, "//h3[@class='price-container']"))
+    ).text.split()[0]
+
+    price_cents = int(price_text.replace("$", "")) * 100
+    return name, price_cents
+
+
+def create_stripe_charge(amount, description, card_token="tok_visa"):
+    """Create a charge in Stripe API and handle declined card exceptions"""
+    stripe.api_key = cfg.STRIPE_API_KEY
+    try:
+        charge = stripe.Charge.create(
+            amount=amount,
+            currency="usd",
+            source=card_token,
+            description=description
+        )
+        return charge
+    except stripe.error.CardError as e:
+        charge_id = e.error.charge
+        return stripe.Charge.retrieve(charge_id)
+
+
+def insert_payment_to_db(charge_id, amount, status, description):
+    """Insert payment record into SQLite database"""
+    conn = sqlite3.connect(cfg.DATABASE_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO payments (payment_id, amount, status, description) VALUES (?, ?, ?, ?)",
+        (charge_id, amount, status, description)
+    )
+    conn.commit()
+    conn.close()

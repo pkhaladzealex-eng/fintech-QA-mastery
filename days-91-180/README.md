@@ -12,20 +12,19 @@ The focus of this phase is moving from simple scripts to production-grade automa
 * Extracting common actions into helper utility modules (`ecommerce_utils.py`) to keep tests clean and DRY (Don't Repeat Yourself).
 * Automating both positive happy-paths and negative validation scenarios (e.g., checkout without payment details).
 
----
-
 ## 🧪 Tests & Files Directory
 
-* [day91.py](day91.py)  - Initial basic Selenium automation script for DemoBlaze (product selection and cart interaction).
-* [day92.py](day92.py) - Refactored script with zero hardcoded sleeps using dynamic explicit wait conditions.
-* [ecommerce_utils.py](ecommerce_utils.py) - Reusable helper module containing UI interaction functions (navigation, product selection, checkout, alert handling).
-* [test_ecommerce_flow.py](test_ecommerce_flow.py) - Pytest suite for e-commerce cart management (adding items, verifying cart content, removing items with `staleness_of` assertions).
-* [test_payment_checkout.py](test_payment_checkout.py) - Pytest suite for order completion (filling checkout forms, validating purchase modals, and handling missing payment detail alerts).
-* [conftest.py](conftest.py) - Pytest configuration module providing session-scoped `browser` fixture and automated test logging (`autouse=True`)
+* [demoblaze/](demoblaze/) - Dedicated directory containing modular test suites and utilities for the DemoBlaze e-commerce platform.
+  * [demoblaze/utils.py](demoblaze/utils.py) - Reusable helper functions for UI navigation, data extraction, Stripe API integration, and SQLite database logging.
+  * [demoblaze/config.py](demoblaze/config.py) - Environment configurations, base URLs, element selectors, and database paths.
+  * [demoblaze/test_ecommerce_flow.py](demoblaze/test_ecommerce_flow.py) - Pytest suite for e-commerce cart management (adding items, verifying cart content, removing items with `staleness_of` assertions).
+  * [demoblaze/test_payment_checkout.py](demoblaze/test_payment_checkout.py) - Order completion suite validating purchase modals and mandatory field alerts.
+  * [demoblaze/test_full_payment_integration.py](demoblaze/test_full_payment_integration.py) - Full 3-layer integration test connecting Selenium UI automation, Stripe API charges, and SQLite DB assertions.
+  * [demoblaze/test_payment_error_handling.py](demoblaze/test_payment_error_handling.py) - Multi-layer error handling test simulating declined cards via Stripe API and verifying DB logging.
+* [conftest.py](conftest.py) - Pytest configuration module providing session-scoped `browser` fixture and automated test logging (`autouse=True`).
+* [day91.py](day91.py) - Initial basic Selenium automation script for DemoBlaze.
+* [day92.py](day92.py) - Refactored automation script using dynamic explicit waits.
 * [day100-milestone.md](day100-milestone.md) - Milestone reflection documenting 100 days of consistency, 226 total commits, skill progress, and roadmap for the next 80 days.
-* [test_full_payment_integration.py](test_full_payment_integration.py) - End-to-end integration test connecting Selenium UI automation, Stripe API test charges, and SQLite database verification.
-* [test_payment_error_handling.py](test_payment_error_handling.py) - Error handling integration test across UI, Stripe API (declined card simulation), and SQLite DB status verification.
----
 
 ## 🚀 How to Run Tests
 
@@ -47,6 +46,9 @@ pytest . -v -s
 * **Dynamic DOM Assertions:** Verifying element state changes and item counts after cart deletions.
 * **Full-Stack Integration Testing:** Combined Web UI data extraction, Stripe API payment processing, and SQLite DB verification into a single test asserting data integrity across all three layers (`UI Price == Stripe Amount == DB Amount`).
 * **Multi-Layer Error Handling:** Validated failed payment workflows end-to-end by handling `stripe.error.CardError` exceptions, extracting failed charge IDs, and asserting consistent failure statuses (`failed`) across API responses and database records.
+* **Modular Project Architecture:** Structured test suites into application-specific directories (`/demoblaze/`), separating reusable helpers, configurations, and test modules for cleaner maintainability.
+
+
 
 ## 📸 Test Execution Evidence & Screenshots
 [demoblaze_cart.png](demoblaze_cart.png) - Verification of item successfully added to the shopping cart.
