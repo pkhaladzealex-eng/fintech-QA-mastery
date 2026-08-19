@@ -21,6 +21,10 @@ The focus of this phase is moving from simple scripts to production-grade automa
   * [demoblaze/test_payment_checkout.py](demoblaze/test_payment_checkout.py) - Order completion suite validating purchase modals and mandatory field alerts.
   * [demoblaze/test_full_payment_integration.py](demoblaze/test_full_payment_integration.py) - Full 3-layer integration test connecting Selenium UI automation, Stripe API charges, and SQLite DB assertions.
   * [demoblaze/test_payment_error_handling.py](demoblaze/test_payment_error_handling.py) - Multi-layer error handling test simulating declined cards via Stripe API and verifying DB logging.
+* [practicesoftwaretesting/](practicesoftwaretesting/) - E2E automation suite for the ToolShop Demo platform.
+  * [practicesoftwaretesting/utils.py](practicesoftwaretesting/utils.py) - Helper utilities for guest registration, billing details, and credit card processing.
+  * [practicesoftwaretesting/config.py](practicesoftwaretesting/config.py) - Centralized locators and guest user test data.
+  * [practicesoftwaretesting/test_checkout.py](practicesoftwaretesting/test_checkout.py) - Complete multi-step guest checkout E2E test.
 * [conftest.py](conftest.py) - Pytest configuration module providing session-scoped `browser` fixture and automated test logging (`autouse=True`).
 * [day91.py](day91.py) - Initial basic Selenium automation script for DemoBlaze.
 * [day92.py](day92.py) - Refactored automation script using dynamic explicit waits.
@@ -47,7 +51,7 @@ pytest . -v -s
 * **Full-Stack Integration Testing:** Combined Web UI data extraction, Stripe API payment processing, and SQLite DB verification into a single test asserting data integrity across all three layers (`UI Price == Stripe Amount == DB Amount`).
 * **Multi-Layer Error Handling:** Validated failed payment workflows end-to-end by handling `stripe.error.CardError` exceptions, extracting failed charge IDs, and asserting consistent failure statuses (`failed`) across API responses and database records.
 * **Modular Project Architecture:** Structured test suites into application-specific directories (`/demoblaze/`), separating reusable helpers, configurations, and test modules for cleaner maintainability.
-
+* **Cross-Platform Test Adaptability:** Demonstrated ability to build scalable, platform-independent test suites by introducing a second e-commerce platform (`practicesoftwaretesting`) using separate utility modules and locator configurations.
 
 
 ## 📸 Test Execution Evidence & Screenshots
