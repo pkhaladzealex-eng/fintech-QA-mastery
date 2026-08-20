@@ -4,6 +4,16 @@ This directory contains the end-to-end automation test suite for the DemoBlaze e
 
 ---
 
+---
+
+## 📸 Test Execution Screenshots
+
+|        Purchase Confirmation        |             Invalid Checkout Validation             |            Cart Flow             |
+|:-----------------------------------:|:---------------------------------------------------:|:--------------------------------:|
+| ![Purchase](demoblaze_purchase.png) | ![Invalid Checkout](demoblaze_invalid_checkout.png) | ![Cart Flow](demoblaze_cart.png) |
+
+---
+
 ## 📁 Directory Structure
 * `utils.py` - Core helper functions for UI navigation, data extraction, Stripe API integration, and SQLite database recording.
 * `config.py` - Environment configuration, base URLs, element selectors, and DB paths.

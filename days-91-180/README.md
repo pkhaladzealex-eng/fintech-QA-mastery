@@ -25,6 +25,9 @@ The focus of this phase is moving from simple scripts to production-grade automa
   * [practicesoftwaretesting/utils.py](practicesoftwaretesting/utils.py) - Helper utilities for guest registration, billing details, and credit card processing.
   * [practicesoftwaretesting/config.py](practicesoftwaretesting/config.py) - Centralized locators and guest user test data.
   * [practicesoftwaretesting/test_checkout.py](practicesoftwaretesting/test_checkout.py) - Complete multi-step guest checkout E2E test.
+* [stripe-api-testing/](stripe-api-testing/) - Pure API test suite targeting Stripe PaymentIntents and Refunds.
+  * [stripe-api-testing/config.py](stripe-api-testing/config.py) - StripeClient initialization and environment setup.
+  * [stripe-api-testing/test_stripe_api.py](stripe-api-testing/test_stripe_api.py) - Pure API tests (successful charges, declined cards, refunds, and charge listing).
 * [conftest.py](conftest.py) - Pytest configuration module providing session-scoped `browser` fixture and automated test logging (`autouse=True`).
 * [day91.py](day91.py) - Initial basic Selenium automation script for DemoBlaze.
 * [day92.py](day92.py) - Refactored automation script using dynamic explicit waits.
@@ -40,28 +43,16 @@ pytest . -v -s
 ## 🛠️ Key QA Automation Skills Demonstrated
 
 * **Explicit Waits:** Leveraging WebDriverWait with EC.element_to_be_clickable, EC.presence_of_element_located, EC.alert_is_present, and EC.staleness_of.
-
 * **Pytest Fixtures:** Reusable @pytest.fixture for driver setup, browser maximization, and clean teardown (yield / driver.quit()).
-
 * **Modular Code Structure:** Reusable helper functions inside ecommerce_utils.py.
-
 * **Positive & Negative Path Testing:** Validating successful purchase confirmation vs. missing payment alert popups.
-
 * **Dynamic DOM Assertions:** Verifying element state changes and item counts after cart deletions.
 * **Full-Stack Integration Testing:** Combined Web UI data extraction, Stripe API payment processing, and SQLite DB verification into a single test asserting data integrity across all three layers (`UI Price == Stripe Amount == DB Amount`).
 * **Multi-Layer Error Handling:** Validated failed payment workflows end-to-end by handling `stripe.error.CardError` exceptions, extracting failed charge IDs, and asserting consistent failure statuses (`failed`) across API responses and database records.
 * **Modular Project Architecture:** Structured test suites into application-specific directories (`/demoblaze/`), separating reusable helpers, configurations, and test modules for cleaner maintainability.
 * **Cross-Platform Test Adaptability:** Demonstrated ability to build scalable, platform-independent test suites by introducing a second e-commerce platform (`practicesoftwaretesting`) using separate utility modules and locator configurations.
+* **Pure API Test Automation:** Built UI-independent API test suites using Stripe SDK (`StripeClient`), validating end-to-end payment intent creation, error handling (`CardError`), refund processing, and pagination/listing responses.
 
-
-## 📸 Test Execution Evidence & Screenshots
-[demoblaze_cart.png](demoblaze_cart.png) - Verification of item successfully added to the shopping cart.
-
-[demoblaze_cart_01.png](demoblaze_cart_01.png) - Verification of cart state after item removal.
-
-[demoblaze_purchase.png](demoblaze_purchase.png) - Confirmation modal after filling checkout details and placing an order.
-
-[demoblaze_invalid_checkout.png](demoblaze_invalid_checkout.png) - Alert validation popup when attempting checkout with missing mandatory fields.
 
 ---
 

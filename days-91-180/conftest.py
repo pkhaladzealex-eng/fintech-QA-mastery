@@ -16,3 +16,11 @@ def log_test_info(request):
     print(f"\n[START] {request.node.name}")
     yield
     print(f"[END] {request.node.name}")
+
+@pytest.fixture(autouse=True)
+def cleanup_after_test():
+    """Cleanup test data after each test"""
+    yield
+    # Note: Stripe test data auto-clears after 30 days
+    # In production, we'd delete created resources here
+    print("\n[Cleanup] Test completed - Stripe test data will auto-clear")

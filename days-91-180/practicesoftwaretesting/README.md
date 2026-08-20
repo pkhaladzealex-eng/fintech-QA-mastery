@@ -2,6 +2,12 @@
 
 This directory contains automated end-to-end checkout flow tests for the PracticeSoftwareTesting platform.
 
+
+---
+
+## 📸 Automated Checkout Verification
+![Successful Checkout](practicesoftwaretesting.png)
+
 ---
 
 ## 📁 Directory Structure
