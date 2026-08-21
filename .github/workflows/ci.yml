@@ -32,6 +32,6 @@ jobs:
     - name: Run All Pytest Suites
       env:
         STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
-        PYTHONPATH: ${{ github.workspace }}/days-91-180/practicesoftwaretesting:${{ github.workspace }}/days-91-180/demoblaze:${{ github.workspace }}/days-91-180/stripe-api-testing
+        PYTHONPATH: ${{ github.workspace }}/days-91-180
       run: |
         pytest days-91-180/ -v --tb=short

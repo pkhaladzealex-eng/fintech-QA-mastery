@@ -1,7 +1,8 @@
 from selenium.webdriver.support.ui import WebDriverWait
 import sqlite3
-import config as cfg
-import utils
+
+from . import config as cfg
+from . import utils
 
 def test_payment_error_handling(browser):
     wait = WebDriverWait(browser, 10)

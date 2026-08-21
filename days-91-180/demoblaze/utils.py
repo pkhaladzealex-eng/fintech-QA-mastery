@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sqlite3
 import stripe
-import config as cfg
+from . import config as cfg
 
 def open_site(driver):
     # Navigate to the target website and maximize the browser window

@@ -3,7 +3,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from config import *
+from .config import *
+
+# ... დანარჩენი კოდი რჩება უცვლელი ...
 
 def add_product_to_cart(driver, wait):
     # Select a product

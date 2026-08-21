@@ -4,9 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-import utils
-import config as cfg
-
+from . import utils
+from . import config as cfg
 
 
 def test_payment_checkout(browser):
