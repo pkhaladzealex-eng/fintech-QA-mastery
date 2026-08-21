@@ -3,8 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from config import *
-
+from days_91_180.practicesoftwaretesting.config import *
+S
 def add_product_to_cart(driver, wait):
     # Select a product
     first_product = wait.until(
