@@ -129,4 +129,17 @@ Explicit waits check the browser continuously and move forward the moment an ele
 
 ---
 
+## Day 106
+
+---
+
+**Interview Question:**
+
+"Explain what CI/CD means and why it matters for QA."
+
+**Answer to memorize:**
+
+"CI/CD stands for Continuous Integration and Continuous Deployment. CI means code changes are automatically tested as soon as pushed. CD means validated code is automatically deployed. For QA, CI/CD is critical because it catches bugs early—before they reach production. Automated tests run on every commit, ensuring code quality stays high. This is industry standard in all modern tech companies."
+
+---
 
