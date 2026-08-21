@@ -1,8 +1,8 @@
 from selenium.webdriver.support.ui import WebDriverWait
 import time
 
-from days_91_180.practicesoftwaretesting.config import *
-from days_91_180.practicesoftwaretesting.utils import *
+from .config import *
+from .utils import *
 def test_successful_guest_checkout(browser):
 
     wait = WebDriverWait(browser, IMPLICIT_WAIT_TIMEOUT)
