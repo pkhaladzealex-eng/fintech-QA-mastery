@@ -1,23 +1,21 @@
 import pytest
 import config as cfg
 import stripe
+import os
 
+client = stripe.StripeClient(os.environ.get("STRIPE_API_KEY"))
 
 def test_create_successful_charge():
-    # 1. Create a charge (successful)
-    payment_intent = cfg.client.v1.payment_intents.create({
+    payment_intent = client.v1.payment_intents.create({
         "amount": 2000,
         "currency": "usd",
         "payment_method": "pm_card_visa",
         "confirm": True,
         "return_url": "https://example.com"
     })
-
-    # Assertions
     assert payment_intent.id is not None
     assert payment_intent.status == "succeeded"
     assert payment_intent.amount == 2000
-
 
 
 def test_create_declined_charge():

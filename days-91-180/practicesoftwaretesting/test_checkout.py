@@ -1,12 +1,12 @@
 from selenium.webdriver.support.ui import WebDriverWait
 import time
 
-from config import *
+import config as cfg
 from utils import *
 
 def test_successful_guest_checkout(browser):
 
-    wait = WebDriverWait(browser, IMPLICIT_WAIT_TIMEOUT)
+    wait = WebDriverWait(browser, cfg.IMPLICIT_WAIT_TIMEOUT)
 
     try:
         # Step 1: Open site
