@@ -134,9 +134,20 @@ def create_stripe_charge(amount, description, card_token="tok_visa"):
 
 
 def insert_payment_to_db(charge_id, amount, status, description):
-    """Insert payment record into SQLite database"""
+    """Insert payment record into SQLite database (creates table if missing)"""
     conn = sqlite3.connect(cfg.DATABASE_PATH)
     cursor = conn.cursor()
+
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS payments (
+            payment_id TEXT PRIMARY KEY,
+            amount INTEGER,
+            status TEXT,
+            description TEXT
+        )
+    ''')
+
     cursor.execute(
         "INSERT INTO payments (payment_id, amount, status, description) VALUES (?, ?, ?, ?)",
         (charge_id, amount, status, description)

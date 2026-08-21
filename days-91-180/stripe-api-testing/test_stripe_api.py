@@ -1,5 +1,4 @@
 import pytest
-import config as cfg
 import stripe
 import os
 
@@ -21,7 +20,7 @@ def test_create_successful_charge():
 def test_create_declined_charge():
     # 2. Create a charge (declined card)
     with pytest.raises(stripe.CardError) as exc_info:
-        cfg.client.v1.payment_intents.create({
+        client.v1.payment_intents.create({
             "amount": 2000,
             "currency": "usd",
             "payment_method": "pm_card_visa_chargeDeclined",
@@ -37,7 +36,7 @@ def test_create_declined_charge():
 
 def test_retrieve_charge():
     # 3. Retrieve a charge
-    created_pi = cfg.client.v1.payment_intents.create({
+    created_pi = client.v1.payment_intents.create({
         "amount": 3000,
         "currency": "usd",
         "payment_method": "pm_card_visa",
@@ -45,7 +44,7 @@ def test_retrieve_charge():
         "return_url": "https://example.com"
     })
 
-    retrieved_pi = cfg.client.v1.payment_intents.retrieve(created_pi.id)
+    retrieved_pi = client.v1.payment_intents.retrieve(created_pi.id)
 
     # Assertions
     assert retrieved_pi.id == created_pi.id
@@ -56,7 +55,7 @@ def test_retrieve_charge():
 
 def test_create_refund():
     # 4. Create a refund
-    created_pi = cfg.client.v1.payment_intents.create({
+    created_pi = client.v1.payment_intents.create({
         "amount": 2000,
         "currency": "usd",
         "payment_method": "pm_card_visa",
@@ -64,7 +63,7 @@ def test_create_refund():
         "return_url": "https://example.com"
     })
 
-    refund = cfg.client.v1.refunds.create({
+    refund = client.v1.refunds.create({
         "payment_intent": created_pi.id
     })
 
@@ -75,7 +74,7 @@ def test_create_refund():
 def test_list_charges():
     # 5. List charges
     for i in range(3):
-        cfg.client.v1.payment_intents.create({
+        client.v1.payment_intents.create({
             "amount": 1000 * (i + 1),
             "currency": "usd",
             "payment_method": "pm_card_visa",
@@ -83,7 +82,7 @@ def test_list_charges():
             "return_url": "https://example.com"
         })
 
-    payment_intents_list = cfg.client.v1.payment_intents.list(params={"limit": 10})
+    payment_intents_list = client.v1.payment_intents.list(params={"limit": 10})
 
     # Assertions
     assert len(payment_intents_list.data) >= 3
