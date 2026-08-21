@@ -70,7 +70,16 @@ def test_add_product_to_cart_and_remove(browser):
     # Execute: Remove item
     utils.remove_product_from_cart(browser, wait)
 
-    # Verify product is removed from cart
+    # Verify product is removed from cart using explicit wait for length 0
+    wait.until(EC.staleness_of(cart_item))
+
+    # Extra check: wait until no elements match the locator
+    wait.until(
+        lambda driver: len(driver.find_elements(By.XPATH, "//td[contains(text(), 'HTC One M9')]")) == 0
+    )
+
+    remaining_items = browser.find_elements(By.XPATH, "//td[contains(text(), 'HTC One M9')]")
+    assert len(remaining_items) == 0, "Item was not removed from cart!"
     wait.until(EC.staleness_of(cart_item))
 
     # Assertion: Product removed from cart

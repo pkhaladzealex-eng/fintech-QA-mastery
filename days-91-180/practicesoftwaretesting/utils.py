@@ -5,10 +5,12 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from .config import *
 
-# ... დანარჩენი კოდი რჩება უცვლელი ...
 
 def add_product_to_cart(driver, wait):
-    # Select a product
+    # Wait until product cards are attached and visible in UI
+    first_product = wait.until(
+        EC.visibility_of_element_located((By.XPATH, PRODUCT_LOCATOR))
+    )
     first_product = wait.until(
         EC.element_to_be_clickable((By.XPATH, PRODUCT_LOCATOR))
     )
@@ -19,9 +21,6 @@ def add_product_to_cart(driver, wait):
         EC.element_to_be_clickable((By.XPATH, ADD_TO_CART_BTN_LOCATOR))
     )
     add_to_cart_btn.click()
-    wait.until(
-        EC.visibility_of_element_located((By.XPATH, CART_LINK_LOCATOR))
-    )
 
     # Checks number of items in the cart
     cart_count_element = wait.until(
