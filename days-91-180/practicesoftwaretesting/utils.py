@@ -7,26 +7,28 @@ from .config import *
 
 
 def add_product_to_cart(driver, wait):
-    #
-    first_product = wait.until(
-        EC.presence_of_element_located((By.XPATH, "//a[contains(@class, 'card')]"))
-    )
-    #
+    # 1. Select product card
     wait.until(
         EC.element_to_be_clickable((By.XPATH, "//a[contains(@class, 'card')]"))
     ).click()
 
-    # Add to cart
+    # 2. Click Add to cart
     add_to_cart_btn = wait.until(
         EC.element_to_be_clickable((By.XPATH, ADD_TO_CART_BTN_LOCATOR))
     )
     add_to_cart_btn.click()
 
-
-    cart_count_element = wait.until(
-        EC.visibility_of_element_located((By.XPATH, CART_LINK_LOCATOR))
+    # 3. Wait for the success toast message to confirm item addition
+    wait.until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "div.toast-message, div.alert-success, [role='alert']"))
     )
-    return cart_count_element.text
+
+    # 4. Read cart count badge
+    cart_count_element = wait.until(
+        EC.presence_of_element_located((By.XPATH, CART_LINK_LOCATOR))
+    )
+    return cart_count_element.text.strip()
+
 def navigate_to_checkout(driver, wait):
     # Navigate to the cart
     cart_link = wait.until(
