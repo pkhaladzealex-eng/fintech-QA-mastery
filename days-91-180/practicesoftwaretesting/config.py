@@ -29,8 +29,7 @@ CREDIT_CARD_DATA = {
 
 # Locators
 # Find available item
-PRODUCT_LOCATOR = "(//a[contains(@class, 'card')][not(contains(., 'Out of stock'))])[1]"
-
+PRODUCT_LOCATOR = "(//a[contains(@class, 'card')])[1]"
 ADD_TO_CART_BTN_LOCATOR = "//button[@id='btn-add-to-cart']"
 
 CART_LINK_LOCATOR = "//span[@id='lblCartCount']"

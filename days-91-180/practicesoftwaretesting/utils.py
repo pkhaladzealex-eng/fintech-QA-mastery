@@ -7,10 +7,7 @@ from .config import *
 
 
 def add_product_to_cart(driver, wait):
-    # Wait until product cards are attached and visible in UI
-    first_product = wait.until(
-        EC.visibility_of_element_located((By.XPATH, PRODUCT_LOCATOR))
-    )
+    # Select first product
     first_product = wait.until(
         EC.element_to_be_clickable((By.XPATH, PRODUCT_LOCATOR))
     )
