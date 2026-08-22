@@ -7,24 +7,26 @@ from .config import *
 
 
 def add_product_to_cart(driver, wait):
-    # Select first product
+    #
     first_product = wait.until(
-        EC.element_to_be_clickable((By.XPATH, PRODUCT_LOCATOR))
+        EC.presence_of_element_located((By.XPATH, "//a[contains(@class, 'card')]"))
     )
-    first_product.click()
+    #
+    wait.until(
+        EC.element_to_be_clickable((By.XPATH, "//a[contains(@class, 'card')]"))
+    ).click()
 
-    # Add product to cart
+    # Add to cart
     add_to_cart_btn = wait.until(
         EC.element_to_be_clickable((By.XPATH, ADD_TO_CART_BTN_LOCATOR))
     )
     add_to_cart_btn.click()
 
-    # Checks number of items in the cart
+
     cart_count_element = wait.until(
         EC.visibility_of_element_located((By.XPATH, CART_LINK_LOCATOR))
     )
     return cart_count_element.text
-
 def navigate_to_checkout(driver, wait):
     # Navigate to the cart
     cart_link = wait.until(
