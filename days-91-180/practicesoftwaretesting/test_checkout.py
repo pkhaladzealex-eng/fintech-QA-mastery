@@ -4,16 +4,16 @@ import time
 from .config import *
 from .utils import *
 
-def test_successful_guest_checkout(browser):
 
-    wait = WebDriverWait(browser, IMPLICIT_WAIT_TIMEOUT)
+def test_successful_guest_checkout(browser):
+    wait = WebDriverWait(browser, 15)
 
     # Step 1: Open site
     browser.get(BASE_URL)
 
-    # Step 2: Add product to cart and verify cart counter
-    cart_count = add_product_to_cart(browser, wait)
-    assert cart_count == "1", f"Expected '1', but got '{cart_count}'"
+    # Step 2: Add product to cart and verify addition
+    is_added = add_product_to_cart(browser, wait)
+    assert is_added is True, "Failed to add product to cart"
 
     # Step 3: Navigate to checkout and verify URL
     current_url = navigate_to_checkout(browser, wait)
@@ -34,7 +34,6 @@ def test_successful_guest_checkout(browser):
     # Step 7: Fill credit card details and verify success message
     success_message = fill_credit_card_details(browser, wait, CREDIT_CARD_DATA)
     assert "successful" in success_message.lower(), f"Expected 'successful' in message, but got: {success_message}"
-    time.sleep(2)
 
     # Screenshot
     browser.save_screenshot("practicesoftwaretesting.png")
