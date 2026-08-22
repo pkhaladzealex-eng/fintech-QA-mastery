@@ -25,11 +25,8 @@ def add_product_to_cart(driver, wait):
     return True
 
 def navigate_to_checkout(driver, wait):
-    # Directly open cart via nav icon or URL to avoid badge sync delay
-    cart_link = wait.until(
-        EC.element_to_be_clickable((By.XPATH, "//a[@routerlink='/checkout' or contains(@href, 'checkout') or @id='lblCartCount']/.."))
-    )
-    cart_link.click()
+    # Navigate directly to checkout URL to avoid Angular header re-render delays
+    driver.get(f"{BASE_URL}checkout")
 
     # Proceed to checkout button
     proceed_btn = wait.until(
