@@ -18,15 +18,13 @@ def add_product_to_cart(driver, wait):
     )
     add_to_cart_btn.click()
 
-    # 3. Wait for the success toast message to confirm item addition
+    # 3. Wait until the cart badge text dynamically updates to '1'
     wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, "div.toast-message, div.alert-success, [role='alert']"))
+        EC.text_to_be_present_in_element((By.XPATH, CART_LINK_LOCATOR), "1")
     )
 
     # 4. Read cart count badge
-    cart_count_element = wait.until(
-        EC.presence_of_element_located((By.XPATH, CART_LINK_LOCATOR))
-    )
+    cart_count_element = driver.find_element(By.XPATH, CART_LINK_LOCATOR)
     return cart_count_element.text.strip()
 
 def navigate_to_checkout(driver, wait):
