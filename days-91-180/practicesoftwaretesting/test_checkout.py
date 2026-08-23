@@ -35,5 +35,5 @@ def test_successful_guest_checkout(browser):
     success_message = fill_credit_card_details(browser, wait, CREDIT_CARD_DATA)
     assert "successful" in success_message.lower(), f"Expected 'successful' in message, but got: {success_message}"
 
-    # Screenshot
+    # Screenshot!
     browser.save_screenshot("practicesoftwaretesting.png")
