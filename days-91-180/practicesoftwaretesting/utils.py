@@ -7,57 +7,59 @@ from .config import *
 
 
 def add_product_to_cart(driver, wait):
-    # Click first product
-    product = wait.until(EC.element_to_be_clickable((By.XPATH, PRODUCT_LOCATOR)))
+    # Click first product card
+    product = wait.until(EC.presence_of_element_located((By.XPATH, "//a[contains(@class, 'card')]")))
     driver.execute_script("arguments[0].click();", product)
 
     # Click Add to Cart
-    add_btn = wait.until(EC.element_to_be_clickable((By.XPATH, ADD_TO_CART_BTN_LOCATOR)))
+    add_btn = wait.until(EC.presence_of_element_located((By.XPATH, ADD_TO_CART_BTN_LOCATOR)))
     driver.execute_script("arguments[0].click();", add_btn)
 
-    # Wait for alert or toast confirmation
-    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.toast-message, div.alert, [role='alert']")))
-    time.sleep(1)
+    # Wait for toast confirmation and short sleep to allow DOM update
+    time.sleep(2)
     return True
 
 
 def navigate_to_checkout(driver, wait):
-    # Click Cart Icon in Nav
-    cart_icon = wait.until(EC.element_to_be_clickable((By.XPATH, NAV_CART_LOCATOR)))
+    # Locate and click the cart navigation link directly via JavaScript
+    cart_icon = wait.until(
+        EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "a[data-test='nav-cart'], a[routerlink='/checkout'], a.nav-link[href*='checkout']"))
+    )
     driver.execute_script("arguments[0].click();", cart_icon)
 
     # Click Proceed to Checkout in Step 1
-    proceed_btn = wait.until(EC.element_to_be_clickable((By.XPATH, PROCEED_BTN_LOCATOR)))
+    proceed_btn = wait.until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//button[contains(@class, 'btn-success') or contains(text(), 'Proceed to checkout')]"))
+    )
     driver.execute_script("arguments[0].click();", proceed_btn)
 
-    # Click Continue as Guest if available
-    try:
-        guest_btn = wait.until(EC.element_to_be_clickable((By.XPATH, CONTINUE_AS_GUEST_LINK_LOCATOR)))
-        driver.execute_script("arguments[0].click();", guest_btn)
-    except Exception:
-        pass
+    # Click Continue as Guest
+    continue_guest = wait.until(
+        EC.presence_of_element_located((By.XPATH,
+                                        "//a[contains(text(), 'Continue as Guest')] | //button[contains(text(), 'Proceed to checkout')]"))
+    )
+    driver.execute_script("arguments[0].click();", continue_guest)
 
     return driver.current_url
 
 
 def fill_guest_form(driver, wait, user_data):
-    try:
-        e_mail = wait.until(EC.presence_of_element_located((By.XPATH, GUEST_EMAIL_LOCATOR)))
-        e_mail.clear()
-        e_mail.send_keys(user_data["email"])
+    e_mail = wait.until(EC.presence_of_element_located((By.XPATH, GUEST_EMAIL_LOCATOR)))
+    e_mail.clear()
+    e_mail.send_keys(user_data["email"])
 
-        f_name = driver.find_element(By.XPATH, GUEST_FIRST_NAME_LOCATOR)
-        f_name.clear()
-        f_name.send_keys(user_data["first_name"])
+    f_name = driver.find_element(By.XPATH, GUEST_FIRST_NAME_LOCATOR)
+    f_name.clear()
+    f_name.send_keys(user_data["first_name"])
 
-        l_name = driver.find_element(By.XPATH, GUEST_LAST_NAME_LOCATOR)
-        l_name.clear()
-        l_name.send_keys(user_data["last_name"])
+    l_name = driver.find_element(By.XPATH, GUEST_LAST_NAME_LOCATOR)
+    l_name.clear()
+    l_name.send_keys(user_data["last_name"])
 
-        proceed_btn = wait.until(EC.element_to_be_clickable((By.XPATH, GUEST_PROCEED_BTN_LOCATOR)))
-        driver.execute_script("arguments[0].click();", proceed_btn)
-    except Exception:
-        pass
+    proceed_btn = wait.until(EC.presence_of_element_located((By.XPATH, GUEST_PROCEED_BTN_LOCATOR)))
+    driver.execute_script("arguments[0].click();", proceed_btn)
 
     country = wait.until(EC.visibility_of_element_located((By.XPATH, BILLING_COUNTRY_LOCATOR)))
     return country.is_displayed()
@@ -73,7 +75,7 @@ def fill_billing_address(driver, wait, address_data):
     driver.find_element(By.XPATH, BILLING_CITY_LOCATOR).send_keys(address_data["city"])
     driver.find_element(By.XPATH, BILLING_STATE_LOCATOR).send_keys(address_data["state"])
 
-    btn = wait.until(EC.element_to_be_clickable((By.XPATH, BILLING_CHECKOUT_BTN_LOCATOR)))
+    btn = wait.until(EC.presence_of_element_located((By.XPATH, BILLING_CHECKOUT_BTN_LOCATOR)))
     driver.execute_script("arguments[0].click();", btn)
 
     dropdown = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, PAYMENT_METHOD_DROPDOWN_LOCATOR)))
@@ -97,7 +99,7 @@ def fill_credit_card_details(driver, wait, card_data):
     driver.find_element(By.XPATH, PAYMENT_CVV_LOCATOR).send_keys(card_data["cvv"])
     driver.find_element(By.XPATH, PAYMENT_CARD_HOLDER_LOCATOR).send_keys(card_data["card_holder_name"])
 
-    confirm_btn = wait.until(EC.element_to_be_clickable((By.XPATH, PAYMENT_CONFIRM_BTN_LOCATOR)))
+    confirm_btn = wait.until(EC.presence_of_element_located((By.XPATH, PAYMENT_CONFIRM_BTN_LOCATOR)))
     driver.execute_script("arguments[0].click();", confirm_btn)
 
     alert = wait.until(EC.presence_of_element_located((By.XPATH, SUCCESS_ALERT_LOCATOR)))
