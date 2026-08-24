@@ -2,7 +2,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def browser():
     options = Options()
     options.add_argument("--headless=new")
@@ -28,3 +28,15 @@ def cleanup_after_test():
     """Cleanup test data after each test"""
     yield
     print("\n[Cleanup] Test completed - Stripe test data will auto-clear")
+
+from selenium.webdriver.chrome.options import Options
+
+def get_browser():
+    options = Options()
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    return webdriver.Chrome(options=options)
