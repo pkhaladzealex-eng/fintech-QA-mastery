@@ -1,5 +1,45 @@
-def fill_guest_form(driver, wait, user_data):
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+from .config import *
 
+
+def add_product_to_cart(driver, wait):
+    product = wait.until(EC.presence_of_element_located((By.XPATH, "//a[contains(@class, 'card')]")))
+    driver.execute_script("arguments[0].click();", product)
+
+    add_btn = wait.until(EC.presence_of_element_located((By.XPATH, ADD_TO_CART_BTN_LOCATOR)))
+    driver.execute_script("arguments[0].click();", add_btn)
+
+    time.sleep(2)
+    return True
+
+
+def navigate_to_checkout(driver, wait):
+    cart_icon = wait.until(
+        EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "a[data-test='nav-cart'], a[routerlink='/checkout'], a.nav-link[href*='checkout']"))
+    )
+    driver.execute_script("arguments[0].click();", cart_icon)
+
+    proceed_btn = wait.until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//button[contains(@class, 'btn-success') or contains(text(), 'Proceed to checkout')]"))
+    )
+    driver.execute_script("arguments[0].click();", proceed_btn)
+
+    continue_guest = wait.until(
+        EC.presence_of_element_located((By.XPATH,
+                                        "//a[contains(text(), 'Continue as Guest')] | //button[contains(text(), 'Proceed to checkout')]"))
+    )
+    driver.execute_script("arguments[0].click();", continue_guest)
+
+    return driver.current_url
+
+
+def fill_guest_form(driver, wait, user_data):
     e_mail = wait.until(EC.visibility_of_element_located((By.XPATH, GUEST_EMAIL_LOCATOR)))
     e_mail.send_keys(user_data["email"])
 
