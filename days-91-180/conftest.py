@@ -40,3 +40,17 @@ def get_browser():
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--disable-blink-features=AutomationControlled")
     return webdriver.Chrome(options=options)
+
+@pytest.fixture(autouse=True)
+def failure_artifacts(request, browser):
+    yield
+    if request.node.rep_call.failed if hasattr(request.node, 'rep_call') else False:
+        browser.save_screenshot(f"failure_{request.node.name}.png")
+        with open(f"failure_{request.node.name}.html", "w") as f:
+            f.write(browser.page_source)
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, "rep_" + rep.when, rep)
