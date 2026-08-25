@@ -30,14 +30,22 @@ def navigate_to_checkout(driver, wait):
     )
     driver.execute_script("arguments[0].click();", proceed_btn)
 
+
+    try:
+        guest_radio = wait.until(
+            EC.element_to_be_clickable((By.XPATH, "//input[@id='guest-checkout' or @value='guest']"))
+        )
+        driver.execute_script("arguments[0].click();", guest_radio)
+    except Exception:
+        pass
+
     continue_guest = wait.until(
-        EC.presence_of_element_located((By.XPATH,
-                                        "//a[contains(text(), 'Continue as Guest')] | //button[contains(text(), 'Proceed to checkout')]"))
+        EC.element_to_be_clickable((By.XPATH,
+                                    "//button[@data-test='proceed-2'] | //a[contains(text(), 'Continue as Guest')] | //button[contains(text(), 'Proceed to checkout')]"))
     )
     driver.execute_script("arguments[0].click();", continue_guest)
 
     return driver.current_url
-
 
 def fill_guest_form(driver, wait, user_data):
     e_mail = wait.until(EC.visibility_of_element_located((By.XPATH, GUEST_EMAIL_LOCATOR)))
