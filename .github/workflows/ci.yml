@@ -34,6 +34,7 @@ jobs:
         STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
         PYTHONPATH: ${{ github.workspace }}/days-91-180
       run: |
+        pytest days-91-180/ -v --tb=short
 
     - name: Upload failure screenshots
       if: failure()
@@ -43,9 +44,3 @@ jobs:
         path: |
           *.png
           *.html
-          - name: Run All Pytest Suites
-      env:
-        STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
-        PYTHONPATH: ${{ github.workspace }}/days-91-180
-      run: |
-        pytest days-91-180/ -v --tb=short
