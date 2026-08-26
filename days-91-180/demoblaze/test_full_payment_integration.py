@@ -3,8 +3,10 @@ import sqlite3
 
 from . import config as cfg
 from . import utils
+
+
 def test_full_payment_integration(browser):
-    wait = WebDriverWait(browser, 10)
+    wait = WebDriverWait(browser, cfg.DEFAULT_WAIT)
 
     # 1. UI Automation
     utils.open_site(browser)

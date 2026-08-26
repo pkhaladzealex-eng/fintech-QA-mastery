@@ -1,12 +1,11 @@
 from selenium.webdriver.support.ui import WebDriverWait
-import time
 
 from . import config as cfg
 from . import utils
 
 
 def test_successful_guest_checkout(browser):
-    wait = WebDriverWait(browser, 15)
+    wait = WebDriverWait(browser, cfg.DEFAULT_WAIT)
 
     # Step 1: Open site
     browser.get(cfg.BASE_URL)
@@ -19,8 +18,9 @@ def test_successful_guest_checkout(browser):
     current_url = utils.navigate_to_checkout(browser, wait)
     assert "checkout" in current_url, f"Expected 'checkout' in URL, but got '{current_url}'"
 
-    # Step 4: Fill guest form and verify billing address step is visible
-    is_billing_visible = utils.fill_guest_form(browser, wait, cfg.GUEST_USER_DATA)
+    # Step 4: Fill guest form (unique email per run) and verify billing step appears
+    guest_data = cfg.get_guest_user_data()
+    is_billing_visible = utils.fill_guest_form(browser, wait, guest_data)
     assert is_billing_visible is True, "Billing address step did not appear!"
 
     # Step 5: Fill billing address and verify payment step is visible

@@ -1,13 +1,25 @@
+import uuid
+
 # URL & Timeouts
 BASE_URL = "https://practicesoftwaretesting.com/"
-IMPLICIT_WAIT_TIMEOUT = 15
+DEFAULT_WAIT = 15  # was dead code before (IMPLICIT_WAIT_TIMEOUT, never referenced anywhere)
 
-# Test Data
-GUEST_USER_DATA = {
-    "email": "alex@testing.com",
-    "first_name": "Alex",
-    "last_name": "QA"
-}
+
+def get_guest_user_data():
+    """
+    Returns guest checkout data with a UNIQUE email on every call.
+    Previously this was a static dict with a hardcoded email - every CI run
+    (and every retry of a failed run) sent the exact same address. Generating
+    a fresh one avoids any duplicate-guest edge cases and makes each run's
+    data traceable in logs/screenshots.
+    """
+    unique_id = uuid.uuid4().hex[:8]
+    return {
+        "email": f"alex.qa.{unique_id}@testing.com",
+        "first_name": "Alex",
+        "last_name": "QA",
+    }
+
 
 BILLING_ADDRESS_DATA = {
     "country": "US",
@@ -25,18 +37,25 @@ CREDIT_CARD_DATA = {
     "card_holder_name": "QA tester",
 }
 
-# Locators
+# --- Locators ---
+# Single source of truth. utils.py previously hardcoded some of these inline
+# with slightly different values, so a real site change would have needed
+# fixing in two places. Consolidated here.
+
 PRODUCT_LOCATOR = "//a[contains(@class, 'card')]"
 ADD_TO_CART_BTN_LOCATOR = "//button[@id='btn-add-to-cart']"
-NAV_CART_LOCATOR = "//a[@data-test='nav-cart' or @routerlink='/checkout']"
-PROCEED_BTN_LOCATOR = "//button[@data-test='proceed-1' or contains(text(), 'Proceed to checkout')]"
+
+# CSS version - matches what actually worked in production, not the unused
+# XPath variant that used to sit here unreferenced.
+NAV_CART_LOCATOR = "a[data-test='nav-cart'], a[routerlink='/checkout'], a.nav-link[href*='checkout']"
+PROCEED_BTN_LOCATOR = "//button[contains(@class, 'btn-success') or contains(text(), 'Proceed to checkout')]"
+GUEST_CHECKOUT_RADIO_LOCATOR = "//input[@id='guest-checkout' or @value='guest']"
 CONTINUE_AS_GUEST_LINK_LOCATOR = "//button[@data-test='proceed-2'] | //a[contains(text(), 'Continue as Guest')] | //button[contains(text(), 'Proceed to checkout')]"
 
 # Guest Form Locators
 GUEST_EMAIL_LOCATOR = "//input[@id='guest-email']"
 GUEST_FIRST_NAME_LOCATOR = "//input[@id='guest-first-name']"
 GUEST_LAST_NAME_LOCATOR = "//input[@id='guest-last-name']"
-GUEST_CONTINUE_BTN_LOCATOR = "//input[@value='Continue as Guest'] | //button[@data-test='proceed-2']"
 GUEST_PROCEED_BTN_LOCATOR = "//button[@data-test='proceed-2' or contains(text(), 'Proceed to checkout')]"
 
 # Billing Address Locators
