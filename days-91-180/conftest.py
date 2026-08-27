@@ -47,12 +47,22 @@ def failure_artifacts(request):
     """
     Save screenshot + page source ONLY for tests that actually use the
     `browser` fixture. Does NOT force Chrome to launch for API-only tests
-    (e.g. stripe-api-testing), unlike the previous version.
+    (e.g. stripe-api-testing).
+
+    IMPORTANT: we pull in the `browser` fixture (via request.getfixturevalue)
+    BEFORE yield - i.e. during setup, not teardown. This tells pytest that
+    failure_artifacts depends on browser, so on teardown pytest tears this
+    fixture down BEFORE calling browser's own teardown (driver.quit()).
+    Without this, browser.quit() was running first and our screenshot call
+    hit a closed/dead driver session (ConnectionRefused).
     """
+    uses_browser = "browser" in request.fixturenames
+    driver = request.getfixturevalue("browser") if uses_browser else None
+
     yield
+
     failed = getattr(request.node, "rep_call", None) is not None and request.node.rep_call.failed
-    if failed and "browser" in request.node.funcargs:
-        driver = request.node.funcargs["browser"]
+    if failed and driver is not None:
         driver.save_screenshot(f"failure_{request.node.name}.png")
         with open(f"failure_{request.node.name}.html", "w", encoding="utf-8") as f:
             f.write(driver.page_source)
