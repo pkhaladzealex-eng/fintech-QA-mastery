@@ -22,14 +22,28 @@ def add_product_to_cart(driver, wait):
 
 def navigate_to_checkout(driver, wait):
     cart_icon = wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, cfg.NAV_CART_LOCATOR))
+        EC.element_to_be_clickable((By.CSS_SELECTOR, cfg.NAV_CART_LOCATOR))
     )
     driver.execute_script("arguments[0].click();", cart_icon)
 
+    # Wait for element_to_be_clickable (visible + enabled), not just present
+    # in the DOM - Angular's awnextstep directive may not have its click
+    # listener fully wired up the instant the element appears.
     proceed_btn = wait.until(
-        EC.presence_of_element_located((By.XPATH, cfg.PROCEED_BTN_LOCATOR))
+        EC.element_to_be_clickable((By.XPATH, cfg.PROCEED_BTN_LOCATOR))
     )
-    driver.execute_script("arguments[0].click();", proceed_btn)
+    # Native Selenium click (real mousedown/mouseup/click sequence) instead
+    # of a JS-forced click - more reliable against framework-bound click
+    # handlers than execute_script's synthetic .click().
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", proceed_btn)
+    proceed_btn.click()
+
+    # Explicit checkpoint: confirm the wizard actually advanced to the
+    # Sign In step (its tab list becomes present) BEFORE hunting for the
+    # guest tab specifically. If the proceed click silently no-ops, this
+    # fails here with a clear message instead of a confusing timeout two
+    # steps later.
+    wait.until(EC.presence_of_element_located((By.XPATH, "//ul[contains(@class, 'nav-tabs')]")))
 
     # Click the "Continue as Guest" tab (a Bootstrap tab anchor, not a
     # separate proceed button - see config.py comment for why the locator
@@ -37,7 +51,7 @@ def navigate_to_checkout(driver, wait):
     continue_guest = wait.until(
         EC.element_to_be_clickable((By.XPATH, cfg.CONTINUE_AS_GUEST_LINK_LOCATOR))
     )
-    driver.execute_script("arguments[0].click();", continue_guest)
+    continue_guest.click()
 
     return driver.current_url
 
