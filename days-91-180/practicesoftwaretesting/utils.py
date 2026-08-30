@@ -74,6 +74,11 @@ def fill_guest_form(driver, wait, user_data):
 
     _click_with_retry(driver, wait, By.XPATH, cfg.GUEST_PROCEED_BTN_LOCATOR)
 
+    # After guest form submits, a confirmation line appears ("Continuing as
+    # guest: ...") with its own separate proceed button - the wizard does
+    # NOT advance to Billing Address until this is also clicked.
+    _click_with_retry(driver, wait, By.XPATH, cfg.GUEST_CONFIRM_PROCEED_LOCATOR)
+
     country = wait.until(EC.visibility_of_element_located((By.XPATH, cfg.BILLING_COUNTRY_LOCATOR)))
     return country.is_displayed()
 

@@ -70,6 +70,12 @@ GUEST_LAST_NAME_LOCATOR = "//input[@id='guest-last-name']"
 # ("//button[@data-test='proceed-2' ...]") never matched anything real.
 GUEST_PROCEED_BTN_LOCATOR = "//input[@data-test='guest-submit']"
 
+# After the guest form submits, the site shows a confirmation line
+# ("Continuing as guest: ...") with its OWN separate "Proceed to checkout"
+# button before actually advancing to Billing Address. Confirmed from real
+# page source - previously missing entirely from this flow.
+GUEST_CONFIRM_PROCEED_LOCATOR = "//button[@data-test='proceed-2-guest']"
+
 # Billing Address Locators
 # Confirmed from real page source: country is a <select>, not an <input>.
 BILLING_COUNTRY_LOCATOR = "//select[@id='country']"
