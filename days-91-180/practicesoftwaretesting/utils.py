@@ -1,17 +1,39 @@
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-import time
+from selenium.common.exceptions import StaleElementReferenceException
 
 from . import config as cfg
 
 
-def add_product_to_cart(driver, wait):
-    product = wait.until(EC.presence_of_element_located((By.XPATH, cfg.PRODUCT_LOCATOR)))
-    driver.execute_script("arguments[0].click();", product)
+def _click_with_retry(driver, wait, by, locator, retries=3):
+    """
+    Re-locates and clicks an element, retrying on StaleElementReferenceException.
 
-    add_btn = wait.until(EC.presence_of_element_located((By.XPATH, cfg.ADD_TO_CART_BTN_LOCATOR)))
-    driver.execute_script("arguments[0].click();", add_btn)
+    This site (Angular + an async "live activity" widget) re-renders parts
+    of the DOM in the background. A perfectly valid element found by
+    wait.until(...) can become stale in the small gap before .click() runs,
+    because Angular replaced that DOM node in the meantime. This is a well
+    known pattern for dynamic SPAs - the fix is to re-find and retry rather
+    than trust a single element reference to survive.
+    """
+    last_exc = None
+    for _ in range(retries):
+        try:
+            el = wait.until(EC.element_to_be_clickable((by, locator)))
+            el.click()
+            return el
+        except StaleElementReferenceException as exc:
+            last_exc = exc
+            continue
+    raise last_exc
+
+
+def add_product_to_cart(driver, wait):
+    _click_with_retry(driver, wait, By.XPATH, cfg.PRODUCT_LOCATOR)
+    _click_with_retry(driver, wait, By.XPATH, cfg.ADD_TO_CART_BTN_LOCATOR)
 
     # NOTE: kept as a short fixed pause - the cart badge/counter has no stable
     # data-test attribute to wait on explicitly. If one becomes available,
@@ -21,22 +43,9 @@ def add_product_to_cart(driver, wait):
 
 
 def navigate_to_checkout(driver, wait):
-    cart_icon = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, cfg.NAV_CART_LOCATOR))
-    )
-    driver.execute_script("arguments[0].click();", cart_icon)
+    _click_with_retry(driver, wait, By.CSS_SELECTOR, cfg.NAV_CART_LOCATOR)
 
-    # Wait for element_to_be_clickable (visible + enabled), not just present
-    # in the DOM - Angular's awnextstep directive may not have its click
-    # listener fully wired up the instant the element appears.
-    proceed_btn = wait.until(
-        EC.element_to_be_clickable((By.XPATH, cfg.PROCEED_BTN_LOCATOR))
-    )
-    # Native Selenium click (real mousedown/mouseup/click sequence) instead
-    # of a JS-forced click - more reliable against framework-bound click
-    # handlers than execute_script's synthetic .click().
-    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", proceed_btn)
-    proceed_btn.click()
+    _click_with_retry(driver, wait, By.XPATH, cfg.PROCEED_BTN_LOCATOR)
 
     # Explicit checkpoint: confirm the wizard actually advanced to the
     # Sign In step (its tab list becomes present) BEFORE hunting for the
@@ -48,10 +57,7 @@ def navigate_to_checkout(driver, wait):
     # Click the "Continue as Guest" tab (a Bootstrap tab anchor, not a
     # separate proceed button - see config.py comment for why the locator
     # is scoped precisely).
-    continue_guest = wait.until(
-        EC.element_to_be_clickable((By.XPATH, cfg.CONTINUE_AS_GUEST_LINK_LOCATOR))
-    )
-    continue_guest.click()
+    _click_with_retry(driver, wait, By.XPATH, cfg.CONTINUE_AS_GUEST_LINK_LOCATOR)
 
     return driver.current_url
 
@@ -66,8 +72,7 @@ def fill_guest_form(driver, wait, user_data):
     l_name = wait.until(EC.visibility_of_element_located((By.XPATH, cfg.GUEST_LAST_NAME_LOCATOR)))
     l_name.send_keys(user_data["last_name"])
 
-    proceed_btn = wait.until(EC.element_to_be_clickable((By.XPATH, cfg.GUEST_PROCEED_BTN_LOCATOR)))
-    driver.execute_script("arguments[0].click();", proceed_btn)
+    _click_with_retry(driver, wait, By.XPATH, cfg.GUEST_PROCEED_BTN_LOCATOR)
 
     country = wait.until(EC.visibility_of_element_located((By.XPATH, cfg.BILLING_COUNTRY_LOCATOR)))
     return country.is_displayed()
@@ -83,8 +88,7 @@ def fill_billing_address(driver, wait, address_data):
     driver.find_element(By.XPATH, cfg.BILLING_CITY_LOCATOR).send_keys(address_data["city"])
     driver.find_element(By.XPATH, cfg.BILLING_STATE_LOCATOR).send_keys(address_data["state"])
 
-    btn = wait.until(EC.element_to_be_clickable((By.XPATH, cfg.BILLING_CHECKOUT_BTN_LOCATOR)))
-    driver.execute_script("arguments[0].click();", btn)
+    _click_with_retry(driver, wait, By.XPATH, cfg.BILLING_CHECKOUT_BTN_LOCATOR)
 
     dropdown = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, cfg.PAYMENT_METHOD_DROPDOWN_LOCATOR)))
     return dropdown.is_displayed()
@@ -106,8 +110,7 @@ def fill_credit_card_details(driver, wait, card_data):
     driver.find_element(By.XPATH, cfg.PAYMENT_CVV_LOCATOR).send_keys(card_data["cvv"])
     driver.find_element(By.XPATH, cfg.PAYMENT_CARD_HOLDER_LOCATOR).send_keys(card_data["card_holder_name"])
 
-    confirm_btn = wait.until(EC.element_to_be_clickable((By.XPATH, cfg.PAYMENT_CONFIRM_BTN_LOCATOR)))
-    driver.execute_script("arguments[0].click();", confirm_btn)
+    _click_with_retry(driver, wait, By.XPATH, cfg.PAYMENT_CONFIRM_BTN_LOCATOR)
 
     alert = wait.until(EC.visibility_of_element_located((By.XPATH, cfg.SUCCESS_ALERT_LOCATOR)))
     return alert.text
