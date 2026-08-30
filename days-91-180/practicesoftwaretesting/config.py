@@ -49,17 +49,30 @@ ADD_TO_CART_BTN_LOCATOR = "//button[@id='btn-add-to-cart']"
 # XPath variant that used to sit here unreferenced.
 NAV_CART_LOCATOR = "a[data-test='nav-cart'], a[routerlink='/checkout'], a.nav-link[href*='checkout']"
 PROCEED_BTN_LOCATOR = "//button[contains(@class, 'btn-success') or contains(text(), 'Proceed to checkout')]"
-GUEST_CHECKOUT_RADIO_LOCATOR = "//input[@id='guest-checkout' or @value='guest']"
-CONTINUE_AS_GUEST_LINK_LOCATOR = "//button[@data-test='proceed-2'] | //a[contains(text(), 'Continue as Guest')] | //button[contains(text(), 'Proceed to checkout')]"
+
+# The "Continue as Guest" element is a Bootstrap TAB anchor (href="#guest-tab"),
+# not a separate proceed button. Confirmed from a real CI failure's page
+# source dump. It must be targeted uniquely: the text "Proceed to checkout"
+# also appears on two OTHER wizard steps (Cart's proceed-1, Address's
+# proceed-3) which briefly remain in the DOM during the step transition -
+# a locator that OR's in that text can race-condition-click the wrong,
+# stale button instead of this tab. Scoping to data-bs-toggle='tab' avoids
+# that collision entirely.
+CONTINUE_AS_GUEST_LINK_LOCATOR = "//a[@data-bs-toggle='tab' and contains(text(), 'Continue as Guest')]"
 
 # Guest Form Locators
 GUEST_EMAIL_LOCATOR = "//input[@id='guest-email']"
 GUEST_FIRST_NAME_LOCATOR = "//input[@id='guest-first-name']"
 GUEST_LAST_NAME_LOCATOR = "//input[@id='guest-last-name']"
-GUEST_PROCEED_BTN_LOCATOR = "//button[@data-test='proceed-2' or contains(text(), 'Proceed to checkout')]"
+
+# Confirmed from real page source: this is an <input type="submit"
+# data-test="guest-submit">, NOT a <button> - the old locator
+# ("//button[@data-test='proceed-2' ...]") never matched anything real.
+GUEST_PROCEED_BTN_LOCATOR = "//input[@data-test='guest-submit']"
 
 # Billing Address Locators
-BILLING_COUNTRY_LOCATOR = "//input[@id='country'] | //select[@id='country']"
+# Confirmed from real page source: country is a <select>, not an <input>.
+BILLING_COUNTRY_LOCATOR = "//select[@id='country']"
 BILLING_POSTAL_CODE_LOCATOR = "//input[@id='postal_code']"
 BILLING_HOUSE_NUMBER_LOCATOR = "//input[@id='house_number']"
 BILLING_STREET_LOCATOR = "//input[@id='street']"

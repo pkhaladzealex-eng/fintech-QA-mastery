@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 import time
 
 from . import config as cfg
@@ -30,16 +31,9 @@ def navigate_to_checkout(driver, wait):
     )
     driver.execute_script("arguments[0].click();", proceed_btn)
 
-    # Some checkout flows show an explicit guest-checkout radio before the
-    # "Continue as Guest" button; select it if present, otherwise continue.
-    try:
-        guest_radio = wait.until(
-            EC.element_to_be_clickable((By.XPATH, cfg.GUEST_CHECKOUT_RADIO_LOCATOR))
-        )
-        driver.execute_script("arguments[0].click();", guest_radio)
-    except Exception:
-        pass
-
+    # Click the "Continue as Guest" tab (a Bootstrap tab anchor, not a
+    # separate proceed button - see config.py comment for why the locator
+    # is scoped precisely).
     continue_guest = wait.until(
         EC.element_to_be_clickable((By.XPATH, cfg.CONTINUE_AS_GUEST_LINK_LOCATOR))
     )
@@ -66,8 +60,8 @@ def fill_guest_form(driver, wait, user_data):
 
 
 def fill_billing_address(driver, wait, address_data):
-    country = wait.until(EC.visibility_of_element_located((By.XPATH, cfg.BILLING_COUNTRY_LOCATOR)))
-    country.send_keys(address_data["country"])
+    country_dropdown = wait.until(EC.visibility_of_element_located((By.XPATH, cfg.BILLING_COUNTRY_LOCATOR)))
+    Select(country_dropdown).select_by_value(address_data["country"])
 
     driver.find_element(By.XPATH, cfg.BILLING_POSTAL_CODE_LOCATOR).send_keys(address_data["postal_code"])
     driver.find_element(By.XPATH, cfg.BILLING_HOUSE_NUMBER_LOCATOR).send_keys(address_data["house_number"])
@@ -83,11 +77,8 @@ def fill_billing_address(driver, wait, address_data):
 
 
 def select_credit_card_payment(driver, wait):
-    dropdown = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, cfg.PAYMENT_METHOD_DROPDOWN_LOCATOR)))
-    dropdown.click()
-
-    option = wait.until(EC.element_to_be_clickable((By.XPATH, cfg.PAYMENT_CREDIT_CARD_OPTION_LOCATOR)))
-    option.click()
+    dropdown = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, cfg.PAYMENT_METHOD_DROPDOWN_LOCATOR)))
+    Select(dropdown).select_by_value("credit-card")
 
     card_field = wait.until(EC.visibility_of_element_located((By.XPATH, cfg.PAYMENT_CARD_NUMBER_LOCATOR)))
     return card_field.is_displayed()
