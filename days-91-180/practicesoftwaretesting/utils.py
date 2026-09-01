@@ -3,29 +3,35 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
 
 from . import config as cfg
 
 
 def _click_with_retry(driver, wait, by, locator, retries=3):
     """
-    Re-locates and clicks an element, retrying on StaleElementReferenceException.
+    Re-locates and clicks an element, retrying on StaleElementReferenceException
+    OR TimeoutException.
 
     This site (Angular + an async "live activity" widget) re-renders parts
     of the DOM in the background. A perfectly valid element found by
     wait.until(...) can become stale in the small gap before .click() runs,
-    because Angular replaced that DOM node in the meantime. This is a well
-    known pattern for dynamic SPAs - the fix is to re-find and retry rather
-    than trust a single element reference to survive.
+    because Angular replaced that DOM node in the meantime - OR the same
+    re-render can make the element briefly not-clickable during a single
+    wait.until() poll window, which surfaces as a TimeoutException instead.
+    Both are symptoms of the same underlying flakiness, so both are retried
+    with a fresh WebDriverWait each attempt rather than trusting one poll
+    window to catch the element in a stable state.
     """
     last_exc = None
     for _ in range(retries):
         try:
-            el = wait.until(EC.element_to_be_clickable((by, locator)))
+            attempt_wait = WebDriverWait(driver, cfg.DEFAULT_WAIT)
+            el = attempt_wait.until(EC.element_to_be_clickable((by, locator)))
             el.click()
             return el
-        except StaleElementReferenceException as exc:
+        except (StaleElementReferenceException, TimeoutException) as exc:
             last_exc = exc
             continue
     raise last_exc
