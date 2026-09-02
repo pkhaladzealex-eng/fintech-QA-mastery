@@ -43,7 +43,21 @@ CREDIT_CARD_DATA = {
 # fixing in two places. Consolidated here.
 
 PRODUCT_LOCATOR = "//a[contains(@class, 'card')]"
+
+# Confirmed from a real screenshot of the product listing: an out-of-stock
+# product shows red "Out of stock" text in place of the price, inside the
+# same card. This locator excludes any card containing that text, so we
+# always land on a purchasable product instead of hardcoding the first card
+# (which sometimes turned out to be out of stock).
+IN_STOCK_PRODUCT_LOCATOR = "//a[contains(@class, 'card')][not(.//*[contains(text(), 'Out of stock')])]"
+
 ADD_TO_CART_BTN_LOCATOR = "//button[@id='btn-add-to-cart']"
+
+# Confirmed from a real screenshot: this exact toast text appears after a
+# successful add-to-cart. Waiting for it replaces the old blind
+# time.sleep(10)/time.sleep(2) that previously guessed how long the cart
+# update would take.
+ADD_TO_CART_SUCCESS_TOAST_LOCATOR = "//*[contains(text(), 'Product added to shopping cart')]"
 
 # CSS version - matches what actually worked in production, not the unused
 # XPath variant that used to sit here unreferenced.

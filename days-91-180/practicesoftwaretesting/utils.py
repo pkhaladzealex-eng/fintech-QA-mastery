@@ -1,5 +1,3 @@
-import time
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
@@ -38,13 +36,13 @@ def _click_with_retry(driver, wait, by, locator, retries=3):
 
 
 def add_product_to_cart(driver, wait):
-    _click_with_retry(driver, wait, By.XPATH, cfg.PRODUCT_LOCATOR)
+    _click_with_retry(driver, wait, By.XPATH, cfg.IN_STOCK_PRODUCT_LOCATOR)
     _click_with_retry(driver, wait, By.XPATH, cfg.ADD_TO_CART_BTN_LOCATOR)
 
-    # NOTE: kept as a short fixed pause - the cart badge/counter has no stable
-    # data-test attribute to wait on explicitly. If one becomes available,
-    # replace this with an explicit EC.text_to_be_present_in_element wait.
-    time.sleep(2)
+    # Wait for the real "Product added to shopping cart" toast instead of a
+    # blind sleep - confirms the add actually completed (and the cart
+    # updated) before we move on to navigating to checkout.
+    wait.until(EC.visibility_of_element_located((By.XPATH, cfg.ADD_TO_CART_SUCCESS_TOAST_LOCATOR)))
     return True
 
 
