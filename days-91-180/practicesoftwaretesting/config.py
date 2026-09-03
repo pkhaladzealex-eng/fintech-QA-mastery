@@ -62,7 +62,17 @@ ADD_TO_CART_SUCCESS_TOAST_LOCATOR = "//*[contains(text(), 'Product added to shop
 # CSS version - matches what actually worked in production, not the unused
 # XPath variant that used to sit here unreferenced.
 NAV_CART_LOCATOR = "a[data-test='nav-cart'], a[routerlink='/checkout'], a.nav-link[href*='checkout']"
-PROCEED_BTN_LOCATOR = "//button[contains(@class, 'btn-success') or contains(text(), 'Proceed to checkout')]"
+
+# Scoped to the exact Cart-step button only. The previous version
+# ("//button[contains(@class,'btn-success') or contains(text(),'Proceed to
+# checkout')]") was dangerously broad: THREE different wizard steps (Cart's
+# proceed-1, Guest-confirm's proceed-2-guest, Address's proceed-3) all use
+# the same class and the same visible text. If more than one of those
+# buttons is briefly present in the DOM during Angular's initial render
+# (before "hidden" is applied), that locator could match and click the
+# WRONG step's button, producing exactly the kind of inconsistent,
+# hard-to-reproduce failures seen across multiple CI runs.
+PROCEED_BTN_LOCATOR = "//button[@data-test='proceed-1']"
 
 # The "Continue as Guest" element is a Bootstrap TAB anchor (href="#guest-tab"),
 # not a separate proceed button. Confirmed from a real CI failure's page
@@ -98,7 +108,9 @@ BILLING_HOUSE_NUMBER_LOCATOR = "//input[@id='house_number']"
 BILLING_STREET_LOCATOR = "//input[@id='street']"
 BILLING_CITY_LOCATOR = "//input[@id='city']"
 BILLING_STATE_LOCATOR = "//input[@id='state']"
-BILLING_CHECKOUT_BTN_LOCATOR = "//button[@data-test='proceed-3' or contains(text(), 'Proceed to checkout')]"
+# Scoped to the exact Address-step button only - same reasoning as
+# PROCEED_BTN_LOCATOR above.
+BILLING_CHECKOUT_BTN_LOCATOR = "//button[@data-test='proceed-3']"
 
 # Payment Locators
 PAYMENT_METHOD_DROPDOWN_LOCATOR = "[data-test='payment-method'], select#payment-method"
