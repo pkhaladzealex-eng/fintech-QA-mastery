@@ -32,6 +32,7 @@ The focus of this phase is moving from simple scripts to production-grade automa
 * [day91.py](day91.py) - Initial basic Selenium automation script for DemoBlaze.
 * [day92.py](day92.py) - Refactored automation script using dynamic explicit waits.
 * [day100-milestone.md](day100-milestone.md) - Milestone reflection documenting 100 days of consistency, 226 total commits, skill progress, and roadmap for the next 80 days.
+* [performance_test.py](performance_test.py) - End-to-end execution speed monitoring suite verifying that DemoBlaze add-to-cart (<30s) and PracticeSoftwareTesting checkout (<60s) complete within defined latency budgets to catch UI/network regressions.
 * [.github/workflows/ci.yml](.github/workflows/ci.yml) - GitHub Actions CI/CD workflow executing all Selenium E2E and Stripe API tests automatically on every push and pull request.
 
 
@@ -43,6 +44,12 @@ Ensure you are inside the `days-91-180` directory, then run the Pytest suite usi
 ```bash
 pytest . -v -s
 ```
+
+```bash
+# Run standalone performance tests
+pytest performance_test.py -v -s
+``` 
+
 ## 🛠️ Key QA Automation Skills Demonstrated
 
 * **Explicit Waits:** Leveraging WebDriverWait with EC.element_to_be_clickable, EC.presence_of_element_located, EC.alert_is_present, and EC.staleness_of.
@@ -56,7 +63,7 @@ pytest . -v -s
 * **Cross-Platform Test Adaptability:** Demonstrated ability to build scalable, platform-independent test suites by introducing a second e-commerce platform (`practicesoftwaretesting`) using separate utility modules and locator configurations.
 * **Pure API Test Automation:** Built UI-independent API test suites using Stripe SDK (`StripeClient`), validating end-to-end payment intent creation, error handling (`CardError`), refund processing, and pagination/listing responses.
 * **Continuous Integration (CI/CD) Pipeline:** Integrated GitHub Actions workflow running headless Chrome E2E automation and Stripe API test suites with secure environment variable management (`STRIPE_API_KEY` secrets).
-
+* **E2E Performance & Regression Monitoring:** Implemented threshold-based duration assertions (`time.time()`) to track execution latency across multi-step UI flows, preventing silent latency degradations and excessive retry loops in CI environments.
 ---
 
 ##  Next Steps in Phase 2
