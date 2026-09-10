@@ -34,7 +34,7 @@ The focus of this phase is moving from simple scripts to production-grade automa
 * [day100-milestone.md](day100-milestone.md) - Milestone reflection documenting 100 days of consistency, 226 total commits, skill progress, and roadmap for the next 80 days.
 * [performance_test.py](performance_test.py) - End-to-end execution speed monitoring suite verifying that DemoBlaze add-to-cart (<30s) and PracticeSoftwareTesting checkout (<60s) complete within defined latency budgets to catch UI/network regressions.
 * [.github/workflows/ci.yml](.github/workflows/ci.yml) - GitHub Actions CI/CD workflow executing all Selenium E2E and Stripe API tests automatically on every push and pull request.
-
+* [test_retry_logic.py](test_retry_logic.py) - Resilient error-handling suite using `tenacity` with exponential backoff; simulates transient Stripe failures (`RateLimitError`, `APIConnectionError`) via `unittest.mock` and validates fast-failure on non-retryable exceptions (`CardError`).
 
 
 ## 🚀 How to Run Tests
@@ -64,6 +64,7 @@ pytest performance_test.py -v -s
 * **Pure API Test Automation:** Built UI-independent API test suites using Stripe SDK (`StripeClient`), validating end-to-end payment intent creation, error handling (`CardError`), refund processing, and pagination/listing responses.
 * **Continuous Integration (CI/CD) Pipeline:** Integrated GitHub Actions workflow running headless Chrome E2E automation and Stripe API test suites with secure environment variable management (`STRIPE_API_KEY` secrets).
 * **E2E Performance & Regression Monitoring:** Implemented threshold-based duration assertions (`time.time()`) to track execution latency across multi-step UI flows, preventing silent latency degradations and excessive retry loops in CI environments.
+  * **Fault Tolerance & Retry Orchestration:** Designed intelligent retry strategies (`tenacity`) with exponential backoff and jitter limits; distinguished transient network/rate issues from terminal business errors to prevent thread starvation and unnecessary API polling.
 ---
 
 ##  Next Steps in Phase 2
