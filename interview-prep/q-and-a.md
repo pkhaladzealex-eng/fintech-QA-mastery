@@ -143,3 +143,46 @@ Explicit waits check the browser continuously and move forward the moment an ele
 
 ---
 
+
+ ## Day 107
+
+
+---
+
+**Q:**
+
+"Why is performance testing important in QA?"
+
+**A:**
+
+"Performance testing ensures the application responds quickly under normal conditions. Slow checkout = users abandon carts = lost revenue. I measure page load times, checkout flow duration, API response times. If performance degrades, I flag it as a bug before it reaches production. Performance is part of quality."
+
+---
+
+## Day 108
+
+---
+
+**Q:**
+
+"How do you handle flaky tests caused by network issues?"
+
+**A:**
+
+"Flaky tests fail randomly due to network delays or server timeouts. I use retry logic with exponential backoff—if an API call fails, wait 2 seconds and retry, then 4 seconds, then 8 seconds. After 3 retries, I give up. This is better than hardcoded sleeps because it doesn't waste time when the server responds quickly. Tenacity library handles this automatically in Python."
+
+---
+
+## Day 109
+
+---
+
+**Q:**
+
+"Why are database transactions important in payment testing?"
+
+**A:**
+
+"Transactions ensure atomicity—either all operations complete or none do. In payment systems, if I debit a customer's account but the payment doesn't save in the database, we have data corruption. Using BEGIN/COMMIT/ROLLBACK ensures consistency: if ANY step fails, the entire transaction rolls back, leaving data clean. This is critical for financial systems where partial updates can cause serious bugs."
+
+---
