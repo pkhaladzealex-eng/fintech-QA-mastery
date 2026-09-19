@@ -35,12 +35,6 @@ def log_test_info(request):
     print(f"[END] {request.node.name}")
 
 
-@pytest.fixture(autouse=True)
-def cleanup_after_test():
-    """Cleanup test data after each test."""
-    yield
-    print("\n[Cleanup] Test completed - Stripe test data will auto-clear")
-
 
 @pytest.fixture(autouse=True)
 def failure_artifacts(request):
