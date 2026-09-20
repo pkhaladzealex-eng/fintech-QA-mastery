@@ -10,8 +10,6 @@ LOG_DIR = os.path.join(BASE_DIR, "..", "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
 LOG_FILE_PATH = os.path.join(LOG_DIR, "payment_logs.txt")
 
-WEBHOOK_TIMEOUT = 30
-
 # Centralized explicit-wait timeout - was hardcoded as 10 or 15 inconsistently
 # across test files. Change once here instead of in every test.
 DEFAULT_WAIT = 15
