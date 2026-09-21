@@ -25,7 +25,7 @@ def add_product_to_cart(driver, wait):
     add_btn.click()
 
     # Handle the popup alert
-    alert = wait.until(EC.alert_is_present())
+    wait.until(EC.alert_is_present())
     alert = driver.switch_to.alert
     assert alert.text == "Product added"
     alert.accept()
