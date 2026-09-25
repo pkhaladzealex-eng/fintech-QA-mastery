@@ -25,9 +25,9 @@ The focus of this phase is moving from simple scripts to production-grade automa
   * [practicesoftwaretesting/utils.py](practicesoftwaretesting/utils.py) - Helper utilities for guest registration, billing details, and credit card processing.
   * [practicesoftwaretesting/config.py](practicesoftwaretesting/config.py) - Centralized locators and guest user test data.
   * [practicesoftwaretesting/test_checkout.py](practicesoftwaretesting/test_checkout.py) - Complete multi-step guest checkout E2E test.
-* [stripe-api-testing/](stripe-api-testing/) - Pure API test suite targeting Stripe PaymentIntents and Refunds.
-  * [stripe-api-testing/config.py](stripe-api-testing/config.py) - StripeClient initialization and environment setup.
-  * [stripe-api-testing/test_stripe_api.py](stripe-api-testing/test_stripe_api.py) - Pure API tests (successful charges, declined cards, refunds, and charge listing).
+* [stripe_api_testing/](sstripe_api_testing/) - Pure API test suite targeting Stripe PaymentIntents and Refunds.
+  * [stripe_api_testing/config.py](sstripe_api_testing/config.py) - StripeClient initialization and environment setup.
+  * [stripe_api_testing/test_stripe_api.py](stripe_api_testing/test_stripe_api.py) - Pure API tests (successful charges, declined cards, refunds, and charge listing).
 * [conftest.py](conftest.py) - Pytest configuration module providing session-scoped `browser` fixture and automated test logging (`autouse=True`).
 * [day91.py](day91.py) - Initial basic Selenium automation script for DemoBlaze.
 * [day92.py](day92.py) - Refactored automation script using dynamic explicit waits.

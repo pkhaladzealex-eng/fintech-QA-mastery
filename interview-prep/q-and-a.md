@@ -186,3 +186,4 @@ Explicit waits check the browser continuously and move forward the moment an ele
 "Transactions ensure atomicity—either all operations complete or none do. In payment systems, if I debit a customer's account but the payment doesn't save in the database, we have data corruption. Using BEGIN/COMMIT/ROLLBACK ensures consistency: if ANY step fails, the entire transaction rolls back, leaving data clean. This is critical for financial systems where partial updates can cause serious bugs."
 
 ---
+

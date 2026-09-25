@@ -6,7 +6,13 @@ DEFAULT_WAIT = 15  # was dead code before (IMPLICIT_WAIT_TIMEOUT, never referenc
 
 
 def get_guest_user_data():
-    """Return guest checkout data with a unique email for each test run."""
+    """
+    Returns guest checkout data with a UNIQUE email on every call.
+    Previously this was a static dict with a hardcoded email - every CI run
+    (and every retry of a failed run) sent the exact same address. Generating
+    a fresh one avoids any duplicate-guest edge cases and makes each run's
+    data traceable in logs/screenshots.
+    """
     unique_id = uuid.uuid4().hex[:8]
     return {
         "email": f"alex.qa.{unique_id}@testing.com",
