@@ -18,4 +18,4 @@ This directory contains pure API automation tests for verifying Stripe payment w
 Run this suite from the `days-91-180` directory:
 
 ```bash
-pytest stripe-api-testing -v -s
+pytest stripe_api_testing -v -s
